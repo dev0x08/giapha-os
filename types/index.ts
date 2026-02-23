@@ -8,6 +8,7 @@ export type UserRole = "admin" | "member";
 export interface Profile {
   id: string;
   role: UserRole;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -16,6 +17,7 @@ export interface AdminUserData {
   id: string;
   email: string;
   role: UserRole;
+  is_active: boolean;
   created_at: string;
 }
 

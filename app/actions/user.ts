@@ -42,6 +42,8 @@ export async function adminCreateUser(formData: FormData) {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const role = formData.get("role")?.toString() || "member";
+  const isActiveStr = formData.get("is_active")?.toString();
+  const isActive = isActiveStr === "false" ? false : true;
 
   if (!email || !password) {
     throw new Error("Email và mật khẩu là bắt buộc.");
@@ -54,10 +56,28 @@ export async function adminCreateUser(formData: FormData) {
     new_email: email,
     new_password: password,
     new_role: role,
+    new_active: isActive,
   });
 
   if (error) {
     console.error("Failed to create user:", error);
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/dashboard/users");
+  return { success: true };
+}
+
+export async function toggleUserStatus(userId: string, newStatus: boolean) {
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+  const { error } = await supabase.rpc("set_user_active_status", {
+    target_user_id: userId,
+    new_status: newStatus,
+  });
+
+  if (error) {
+    console.error("Failed to change user status:", error);
     throw new Error(error.message);
   }
 

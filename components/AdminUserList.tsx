@@ -4,6 +4,7 @@ import {
   adminCreateUser,
   changeUserRole,
   deleteUser,
+  toggleUserStatus,
 } from "@/app/actions/user";
 import { AdminUserData, UserRole } from "@/types";
 import { useState } from "react";
@@ -34,6 +35,26 @@ export default function AdminUserList({
         alert("Lỗi khi đổi quyền: " + error.message);
       } else {
         alert("Lỗi không xác định khi đổi quyền");
+      }
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handleStatusChange = async (userId: string, newStatus: boolean) => {
+    try {
+      setLoadingId(userId);
+      await toggleUserStatus(userId, newStatus);
+      setUsers(
+        users.map((u) =>
+          u.id === userId ? { ...u, is_active: newStatus } : u,
+        ),
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert("Lỗi khi đổi trạng thái: " + error.message);
+      } else {
+        alert("Lỗi không xác định khi đổi trạng thái");
       }
     } finally {
       setLoadingId(null);
@@ -105,6 +126,9 @@ export default function AdminUserList({
                   Vai trò
                 </th>
                 <th className="px-6 py-4 text-stone-500 font-medium">
+                  Trạng thái
+                </th>
+                <th className="px-6 py-4 text-stone-500 font-medium">
                   Ngày tạo
                 </th>
                 <th className="px-6 py-4 text-stone-500 font-medium text-right">
@@ -132,12 +156,41 @@ export default function AdminUserList({
                       {user.role}
                     </span>
                   </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${
+                        user.is_active
+                          ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                          : "bg-red-100 text-red-800 border border-red-200"
+                      }`}
+                    >
+                      {user.is_active ? "Đã duyệt" : "Chờ duyệt"}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 text-stone-500">
                     {new Date(user.created_at).toLocaleDateString("vi-VN")}
                   </td>
                   <td className="px-6 py-4 text-right space-x-3">
                     {user.id !== currentUserId && (
                       <>
+                        {user.is_active ? (
+                          <button
+                            disabled={loadingId === user.id}
+                            onClick={() => handleStatusChange(user.id, false)}
+                            className="text-stone-600 hover:text-stone-900 font-medium disabled:opacity-50 cursor-pointer"
+                          >
+                            Khoá
+                          </button>
+                        ) : (
+                          <button
+                            disabled={loadingId === user.id}
+                            onClick={() => handleStatusChange(user.id, true)}
+                            className="text-emerald-600 hover:text-emerald-800 font-medium disabled:opacity-50 cursor-pointer"
+                          >
+                            Duyệt
+                          </button>
+                        )}
+
                         {user.role === "admin" ? (
                           <button
                             disabled={loadingId === user.id}
@@ -242,6 +295,20 @@ export default function AdminUserList({
                   >
                     <option value="member">Thành viên (Member)</option>
                     <option value="admin">Quản trị viên (Admin)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-stone-700 mb-1">
+                    Trạng thái
+                  </label>
+                  <select
+                    name="is_active"
+                    className="w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                    defaultValue="true"
+                  >
+                    <option value="true">Đã duyệt (Active)</option>
+                    <option value="false">Chờ duyệt (Pending)</option>
                   </select>
                 </div>
               </div>

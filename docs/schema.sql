@@ -9,6 +9,7 @@ CREATE TYPE user_role_enum AS ENUM ('admin', 'member');
 CREATE TABLE profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   role user_role_enum DEFAULT 'member' NOT NULL,
+  is_active BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -133,8 +134,12 @@ BEGIN
   -- Check if this is the first user in the system
   SELECT NOT EXISTS (SELECT 1 FROM public.profiles LIMIT 1) INTO is_first_user;
 
-  INSERT INTO public.profiles (id, role)
-  VALUES (new.id, CASE WHEN is_first_user THEN 'admin'::public.user_role_enum ELSE 'member'::public.user_role_enum END);
+  INSERT INTO public.profiles (id, role, is_active)
+  VALUES (
+    new.id, 
+    CASE WHEN is_first_user THEN 'admin'::public.user_role_enum ELSE 'member'::public.user_role_enum END,
+    CASE WHEN is_first_user THEN true ELSE false END
+  );
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -175,7 +180,8 @@ CREATE TYPE public.admin_user_data AS (
     id uuid,
     email text,
     role public.user_role_enum,
-    created_at timestamptz
+    created_at timestamptz,
+    is_active boolean
 );
 
 -- 1. Get Admin Users
@@ -198,7 +204,8 @@ BEGIN
         au.id, 
         au.email::text, 
         p.role, 
-        au.created_at
+        au.created_at,
+        p.is_active
     FROM auth.users au
     LEFT JOIN public.profiles p ON au.id = p.id
     ORDER BY au.created_at DESC;
@@ -253,7 +260,7 @@ $$;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- 4. Admin Create User
-CREATE OR REPLACE FUNCTION public.admin_create_user(new_email text, new_password text, new_role text)
+CREATE OR REPLACE FUNCTION public.admin_create_user(new_email text, new_password text, new_role text, new_active boolean DEFAULT true)
 RETURNS uuid
 LANGUAGE plpgsql
 SECURITY DEFINER
@@ -314,11 +321,32 @@ BEGIN
     );
 
     -- Insert into public.profiles
-    INSERT INTO public.profiles (id, role, created_at, updated_at)
-    VALUES (new_id, new_role::public.user_role_enum, now(), now())
-    ON CONFLICT (id) DO UPDATE SET role = EXCLUDED.role;
+    INSERT INTO public.profiles (id, role, is_active, created_at, updated_at)
+    VALUES (new_id, new_role::public.user_role_enum, new_active, now(), now())
+    ON CONFLICT (id) DO UPDATE SET role = EXCLUDED.role, is_active = EXCLUDED.is_active;
     
     RETURN new_id;
+END;
+$$;
+
+-- 5. Set User Active Status
+CREATE OR REPLACE FUNCTION public.set_user_active_status(target_user_id uuid, new_status boolean)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM public.profiles
+        WHERE id = auth.uid() AND role = 'admin'
+    ) THEN
+        RAISE EXCEPTION 'Access denied. Only admins can access this function.';
+    END IF;
+
+    UPDATE public.profiles
+    SET is_active = new_status, updated_at = now()
+    WHERE id = target_user_id;
 END;
 $$;
 
