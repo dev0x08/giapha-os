@@ -4,7 +4,11 @@ import DefaultAvatar from "@/components/DefaultAvatar";
 import { FemaleIcon, MaleIcon } from "@/components/GenderIcons";
 import RelationshipManager from "@/components/RelationshipManager";
 import { Person } from "@/types";
-import { formatDisplayDate } from "@/utils/dateHelpers";
+import {
+  calculateAge,
+  formatDisplayDate,
+  getLunarDateString,
+} from "@/utils/dateHelpers";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -73,20 +77,119 @@ export default function MemberDetailContent({
                   Đã mất
                 </span>
               )}
-            </h1>
-            <p className="text-sm sm:text-base text-stone-500 mt-1">
-              {formatDisplayDate(
-                person.birth_year,
-                person.birth_month,
-                person.birth_day,
+              {person.is_in_law && (
+                <span className="text-xs sm:text-sm font-sans font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-2 py-0.5 whitespace-nowrap">
+                  {person.gender === "female"
+                    ? "Con dâu"
+                    : person.gender === "male"
+                      ? "Con rể"
+                      : "Dâu / Rể"}
+                </span>
               )}
-              {isDeceased &&
-                ` - ${formatDisplayDate(
+            </h1>
+
+            <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4 flex-wrap">
+              {/* Birth Card */}
+              <div className="flex-1 min-w-[200px] bg-stone-50/80 rounded-xl p-3 sm:p-4 border border-stone-200/60 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <h3 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+                    Sinh
+                  </h3>
+                </div>
+                <div className="space-y-1 pl-3.5 border-l-2 border-stone-200/50">
+                  <p className="text-stone-800 font-medium">
+                    {formatDisplayDate(
+                      person.birth_year,
+                      person.birth_month,
+                      person.birth_day,
+                    )}
+                  </p>
+                  {(person.birth_year ||
+                    person.birth_month ||
+                    person.birth_day) && (
+                    <p className="text-sm text-stone-500 flex items-center gap-1.5">
+                      <span className="text-xs border border-stone-200 bg-white rounded px-1.5 py-0.5 text-stone-500">
+                        Âm
+                      </span>
+                      {getLunarDateString(
+                        person.birth_year,
+                        person.birth_month,
+                        person.birth_day,
+                      ) || "Chưa rõ"}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Death Card */}
+              {isDeceased && (
+                <div className="flex-1 min-w-[200px] bg-stone-50/80 rounded-xl p-3 sm:p-4 border border-stone-200/60 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-stone-400"></span>
+                    <h3 className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+                      Mất
+                    </h3>
+                  </div>
+                  <div className="space-y-1 pl-3.5 border-l-2 border-stone-200/50">
+                    <p className="text-stone-800 font-medium">
+                      {formatDisplayDate(
+                        person.death_year,
+                        person.death_month,
+                        person.death_day,
+                      )}
+                    </p>
+                    {(person.death_year ||
+                      person.death_month ||
+                      person.death_day) && (
+                      <p className="text-sm text-stone-500 flex items-center gap-1.5">
+                        <span className="text-xs border border-stone-200 bg-white rounded px-1.5 py-0.5 text-stone-500">
+                          Âm
+                        </span>
+                        {getLunarDateString(
+                          person.death_year,
+                          person.death_month,
+                          person.death_day,
+                        ) || "Chưa rõ"}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Age Card */}
+              {(() => {
+                const ageData = calculateAge(
+                  person.birth_year,
                   person.death_year,
-                  person.death_month,
-                  person.death_day,
-                )}`}
-            </p>
+                );
+                if (!ageData) return null;
+                return (
+                  <div className="flex-1 min-w-[140px] bg-linear-to-br from-amber-50 to-orange-50/30 rounded-xl p-3 sm:p-4 border border-amber-200/50 shadow-sm flex flex-col justify-center">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${ageData.isDeceased ? "bg-amber-500" : "bg-emerald-400"}`}
+                      ></span>
+                      <p className="text-xs font-semibold text-amber-800/80 uppercase tracking-wider">
+                        {ageData.isDeceased
+                          ? ageData.age >= 60
+                            ? "Hưởng thọ"
+                            : "Hưởng dương"
+                          : "Tuổi"}
+                      </p>
+                    </div>
+                    <div className="pl-3.5">
+                      <p className="text-2xl sm:text-3xl font-bold text-amber-700 tracking-tight">
+                        {ageData.age}
+                        <span className="text-sm sm:text-base font-medium text-amber-600/80 ml-1.5">
+                          tuổi
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
           </div>
         </div>
 

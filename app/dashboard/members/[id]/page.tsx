@@ -1,3 +1,4 @@
+import DeleteMemberButton from "@/components/DeleteMemberButton";
 import MemberDetailContent from "@/components/MemberDetailContent";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
@@ -63,12 +64,15 @@ export default async function MemberDetailPage({ params }: PageProps) {
             ← Quay lại danh sách
           </Link>
           {isAdmin && (
-            <Link
-              href={`/dashboard/members/${id}/edit`}
-              className="px-4 py-2 bg-amber-100 text-amber-800 rounded-md hover:bg-amber-200 font-medium text-sm"
-            >
-              Chỉnh sửa
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/dashboard/members/${id}/edit`}
+                className="px-4 py-2 bg-amber-100 text-amber-800 rounded-md hover:bg-amber-200 font-medium text-sm transition-colors"
+              >
+                Chỉnh sửa
+              </Link>
+              <DeleteMemberButton memberId={id} />
+            </div>
           )}
         </div>
       </header>

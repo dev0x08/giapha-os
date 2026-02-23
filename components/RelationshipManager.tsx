@@ -18,7 +18,7 @@ interface RelationshipManagerProps {
 interface EnrichedRelationship {
   id: string;
   type: RelationshipType;
-  direction: "parent" | "child" | "spouse";
+  direction: "parent" | "child" | "spouse" | "child_in_law";
   targetPerson: Person;
   note: string | null;
 }
@@ -119,6 +119,51 @@ export default function RelationshipManager({
           note: r.note,
         });
       });
+
+      // Fetch in-laws (spouses of children)
+      const childrenIds = formattedRels
+        .filter((r) => r.direction === "child")
+        .map((r) => r.targetPerson.id);
+
+      if (childrenIds.length > 0) {
+        const { data: childrenMarriages } = await supabase
+          .from("relationships")
+          .select(
+            `*, person_a_data:persons!person_a(*), person_b_data:persons!person_b(*)`,
+          )
+          .eq("type", "marriage")
+          .or(
+            `person_a.in.(${childrenIds.join(",")}),person_b.in.(${childrenIds.join(",")})`,
+          );
+
+        if (childrenMarriages) {
+          childrenMarriages.forEach((m) => {
+            const isAChild = childrenIds.includes(m.person_a);
+            const childPerson = isAChild ? m.person_a_data : m.person_b_data;
+            const spousePerson = isAChild ? m.person_b_data : m.person_a_data;
+
+            if (spousePerson && childPerson) {
+              const spouseGender = spousePerson.gender;
+              let noteLabel = `Vợ/chồng của ${childPerson.full_name}`;
+              if (spouseGender === "female")
+                noteLabel = `Con dâu (vợ của ${childPerson.full_name})`;
+              if (spouseGender === "male")
+                noteLabel = `Con rể (chồng của ${childPerson.full_name})`;
+
+              // Append existing marriage note if any
+              if (m.note) noteLabel += ` - ${m.note}`;
+
+              formattedRels.push({
+                id: m.id + "_inlaw",
+                type: "marriage",
+                direction: "child_in_law",
+                targetPerson: spousePerson,
+                note: noteLabel,
+              });
+            }
+          });
+        }
+      }
 
       setRelationships(formattedRels);
     } catch (err) {
@@ -399,12 +444,13 @@ export default function RelationshipManager({
   return (
     <div className="space-y-6">
       {/* List Sections */}
-      {["parent", "spouse", "child"].map((group) => {
+      {["parent", "spouse", "child", "child_in_law"].map((group) => {
         const items = groupByType(group);
         let title = "";
         if (group === "parent") title = "Bố / Mẹ";
         if (group === "spouse") title = "Vợ / Chồng";
         if (group === "child") title = "Con cái";
+        if (group === "child_in_law") title = "Con dâu / Con rể";
 
         if (items.length === 0 && !isAdmin) return null; // Hide empty sections for members? Or show empty state?
 
@@ -469,13 +515,30 @@ export default function RelationshipManager({
                         </Link>
                       );
                     })()}
-                    {isAdmin && (
+                    {isAdmin && rel.direction !== "child_in_law" && (
                       <button
                         onClick={() => handleDelete(rel.id)}
-                        className="text-stone-300 hover:text-red-600 p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="text-stone-300 hover:text-red-500 hover:bg-red-50 p-2 sm:p-2.5 rounded-lg transition-colors flex items-center justify-center ml-2 cursor-pointer"
                         title="Xóa mối quan hệ"
+                        aria-label="Xóa mối quan hệ"
                       >
-                        ✕
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                          <line x1="10" x2="10" y1="11" y2="17" />
+                          <line x1="14" x2="14" y1="11" y2="17" />
+                        </svg>
                       </button>
                     )}
                   </li>
@@ -722,7 +785,7 @@ export default function RelationshipManager({
                       newBulk[index].name = e.target.value;
                       setBulkChildren(newBulk);
                     }}
-                    className="flex-[2] bg-white text-stone-900 placeholder-stone-400 text-sm rounded-md border-stone-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2 border"
+                    className="flex-2 bg-white text-stone-900 placeholder-stone-400 text-sm rounded-md border-stone-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 p-2 border"
                   />
                   <select
                     value={child.gender}
