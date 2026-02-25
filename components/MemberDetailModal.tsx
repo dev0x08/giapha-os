@@ -4,7 +4,7 @@ import MemberDetailContent from "@/components/MemberDetailContent";
 import { Person } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertCircle, Edit2, X } from "lucide-react";
+import { AlertCircle, Edit2, ExternalLink, X } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useDashboard } from "./DashboardContext";
@@ -125,10 +125,7 @@ export default function MemberDetailModal() {
           className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 bg-stone-900/40 backdrop-blur-sm"
         >
           {/* Click-away backdrop */}
-          <div
-            className="absolute inset-0 cursor-pointer"
-            onClick={closeModal}
-          ></div>
+          <div className="absolute inset-0" onClick={closeModal}></div>
 
           {/* Modal Content */}
           <motion.div
@@ -141,18 +138,27 @@ export default function MemberDetailModal() {
             {/* Sticky Header Actions */}
             <div className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 flex items-center gap-2">
               {isAdmin && person && (
-                <Link
-                  href={`/dashboard/members/${person.id}/edit`}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 backdrop-blur-md text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
-                  onClick={closeModal}
-                >
-                  <Edit2 className="w-4 h-4" />
-                  <span className="hidden sm:inline">Chỉnh sửa</span>
-                </Link>
+                <>
+                  <Link
+                    href={`/dashboard/members/${person.id}`}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 backdrop-blur-md text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
+                  >
+                    <ExternalLink className="size-4" />
+                    <span className="hidden sm:inline">Xem chi tiết</span>
+                  </Link>
+                  <Link
+                    href={`/dashboard/members/${person.id}/edit`}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 backdrop-blur-md text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
+                    onClick={closeModal}
+                  >
+                    <Edit2 className="size-4" />
+                    <span className="hidden sm:inline">Chỉnh sửa</span>
+                  </Link>
+                </>
               )}
               <button
                 onClick={closeModal}
-                className="w-10 h-10 flex items-center justify-center bg-stone-100/80 backdrop-blur-md text-stone-600 rounded-full hover:bg-stone-200 hover:text-stone-900 shadow-sm border border-stone-200/50 transition-colors cursor-pointer"
+                className="w-10 h-10 flex items-center justify-center bg-stone-100/80 backdrop-blur-md text-stone-600 rounded-full hover:bg-stone-200 hover:text-stone-900 shadow-sm border border-stone-200/50 transition-colors"
                 aria-label="Đóng"
               >
                 <X className="w-5 h-5" />
@@ -172,7 +178,7 @@ export default function MemberDetailModal() {
                 <p className="text-red-600 font-medium text-lg">{error}</p>
                 <button
                   onClick={closeModal}
-                  className="mt-2 px-6 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-full transition-colors cursor-pointer"
+                  className="mt-2 px-6 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-full transition-colors"
                 >
                   Đóng
                 </button>
@@ -183,7 +189,6 @@ export default function MemberDetailModal() {
                   person={person}
                   privateData={privateData}
                   isAdmin={isAdmin}
-                  onLinkClick={closeModal}
                 />
               </div>
             ) : null}

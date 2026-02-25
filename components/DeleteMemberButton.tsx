@@ -37,7 +37,7 @@ export default function DeleteMemberButton({
     <button
       onClick={handleDelete}
       disabled={isDeleting}
-      className="px-4 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+      className="px-4 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
     >
       {isDeleting ? "Đang xoá..." : "Xoá hồ sơ"}
     </button>

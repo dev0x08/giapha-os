@@ -110,10 +110,10 @@ export default function AdminUserList({
       <div className="flex justify-end">
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="bg-linear-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-5 py-2.5 rounded-xl transition-all duration-300 font-medium text-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer flex items-center gap-2"
+          className="btn-primary"
         >
           <svg
-            className="w-4 h-4"
+            className="size-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -192,7 +192,7 @@ export default function AdminUserList({
                           <button
                             disabled={loadingId === user.id}
                             onClick={() => handleStatusChange(user.id, false)}
-                            className="text-stone-600 hover:text-stone-900 font-medium disabled:opacity-50 cursor-pointer"
+                            className="text-stone-600 hover:text-stone-900 font-medium disabled:opacity-50"
                           >
                             Khoá
                           </button>
@@ -200,7 +200,7 @@ export default function AdminUserList({
                           <button
                             disabled={loadingId === user.id}
                             onClick={() => handleStatusChange(user.id, true)}
-                            className="text-emerald-600 hover:text-emerald-800 font-medium disabled:opacity-50 cursor-pointer"
+                            className="text-emerald-600 hover:text-emerald-800 font-medium disabled:opacity-50"
                           >
                             Duyệt
                           </button>
@@ -210,7 +210,7 @@ export default function AdminUserList({
                           <button
                             disabled={loadingId === user.id}
                             onClick={() => handleRoleChange(user.id, "member")}
-                            className="text-stone-600 hover:text-stone-900 font-medium disabled:opacity-50 cursor-pointer"
+                            className="text-stone-600 hover:text-stone-900 font-medium disabled:opacity-50"
                           >
                             Hạ quyền
                           </button>
@@ -218,7 +218,7 @@ export default function AdminUserList({
                           <button
                             disabled={loadingId === user.id}
                             onClick={() => handleRoleChange(user.id, "admin")}
-                            className="text-amber-600 hover:text-amber-800 font-medium disabled:opacity-50 cursor-pointer"
+                            className="text-amber-600 hover:text-amber-800 font-medium disabled:opacity-50"
                           >
                             Lên Admin
                           </button>
@@ -227,7 +227,7 @@ export default function AdminUserList({
                         <button
                           disabled={loadingId === user.id}
                           onClick={() => handleDelete(user.id)}
-                          className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50 cursor-pointer"
+                          className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
                         >
                           Xóa
                         </button>
@@ -264,7 +264,7 @@ export default function AdminUserList({
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-stone-400 hover:text-stone-600 transition-colors cursor-pointer w-8 h-8 flex items-center justify-center hover:bg-stone-100 rounded-full"
+                className="text-stone-400 hover:text-stone-600 transition-colors w-8 h-8 flex items-center justify-center hover:bg-stone-100 rounded-full"
               >
                 <svg
                   className="w-5 h-5"
@@ -344,14 +344,14 @@ export default function AdminUserList({
                 <button
                   type="button"
                   onClick={() => setIsCreateModalOpen(false)}
-                  className="px-5 py-2.5 rounded-xl text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors cursor-pointer"
+                  className="btn"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
                   disabled={isCreating}
-                  className="px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md text-sm font-medium text-white bg-linear-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all"
+                  className="btn-primary"
                 >
                   {isCreating ? "Đang tạo..." : "Tạo người dùng"}
                 </button>

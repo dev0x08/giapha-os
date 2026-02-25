@@ -81,7 +81,7 @@ export default function DashboardMemberList({
               <div className="relative">
                 <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
                 <select
-                  className="appearance-none bg-white/90 text-stone-700 w-full sm:w-40 pl-9 pr-8 py-2.5 rounded-xl border border-stone-200/80 shadow-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 hover:border-amber-300 font-medium text-sm transition-all focus:bg-white cursor-pointer"
+                  className="appearance-none bg-white/90 text-stone-700 w-full sm:w-40 pl-9 pr-8 py-2.5 rounded-xl border border-stone-200/80 shadow-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 hover:border-amber-300 font-medium text-sm transition-all focus:bg-white"
                   value={filterOption}
                   onChange={(e) => setFilterOption(e.target.value)}
                 >
@@ -112,7 +112,7 @@ export default function DashboardMemberList({
               <div className="relative">
                 <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
                 <select
-                  className="appearance-none bg-white/90 text-stone-700 w-full sm:w-52 pl-9 pr-8 py-2.5 rounded-xl border border-stone-200/80 shadow-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 hover:border-amber-300 font-medium text-sm transition-all focus:bg-white cursor-pointer"
+                  className="appearance-none bg-white/90 text-stone-700 w-full sm:w-52 pl-9 pr-8 py-2.5 rounded-xl border border-stone-200/80 shadow-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 hover:border-amber-300 font-medium text-sm transition-all focus:bg-white"
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
                 >
@@ -139,11 +139,8 @@ export default function DashboardMemberList({
               </div>
             </div>
           </div>
-          <Link
-            href="/dashboard/members/new"
-            className="inline-flex items-center px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl shadow-sm hover:shadow-md text-white bg-linear-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:-translate-y-0.5 w-full sm:w-auto justify-center shrink-0"
-          >
-            <Plus className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
+          <Link href="/dashboard/members/new" className="btn-primary">
+            <Plus className="size-4" strokeWidth={2.5} />
             Thêm thành viên
           </Link>
         </div>

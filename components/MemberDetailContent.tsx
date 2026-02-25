@@ -9,37 +9,23 @@ import {
   getLunarDateString,
 } from "@/utils/dateHelpers";
 import { motion, Variants } from "framer-motion";
-import {
-  Briefcase,
-  ExternalLink,
-  Info,
-  Leaf,
-  MapPin,
-  Phone,
-  Users,
-} from "lucide-react";
+import { Briefcase, Info, Leaf, MapPin, Phone, Users } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface MemberDetailContentProps {
   person: Person;
   privateData: Record<string, unknown> | null;
   isAdmin: boolean;
-  onLinkClick?: () => void;
 }
 
 export default function MemberDetailContent({
   person,
   privateData,
   isAdmin,
-  onLinkClick,
 }: MemberDetailContentProps) {
   const fullPerson = { ...person, ...privateData };
   const isDeceased =
     !!person.death_year || !!person.death_month || !!person.death_day;
-  const pathname = usePathname();
-  const isModalView = pathname !== `/dashboard/members/${person.id}`;
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -339,20 +325,6 @@ export default function MemberDetailContent({
                 </div>
               )}
             </motion.div>
-
-            {/* Link action (Only show in Modal view) */}
-            {isModalView && (
-              <motion.div variants={itemVariants} className="pt-2">
-                <Link
-                  href={`/dashboard/members/${person.id}`}
-                  onClick={onLinkClick}
-                  className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold text-amber-700 bg-amber-50 rounded-xl hover:bg-amber-100 transition-colors border border-amber-200/60 shadow-sm"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Mở trang chi tiết đầy đủ
-                </Link>
-              </motion.div>
-            )}
           </div>
         </div>
       </div>

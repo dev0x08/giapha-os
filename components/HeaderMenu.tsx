@@ -30,7 +30,7 @@ export default function HeaderMenu({ isAdmin, userEmail }: HeaderMenuProps) {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full hover:bg-stone-100 transition-all duration-200 cursor-pointer border border-transparent hover:border-stone-200"
+        className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full hover:bg-stone-100 transition-all duration-200 border border-transparent hover:border-stone-200"
       >
         <div className="w-8 h-8 rounded-full bg-linear-to-br from-amber-200 to-amber-100 text-amber-800 flex items-center justify-center font-bold shadow-sm ring-1 ring-amber-300/50">
           {userEmail ? (
@@ -68,7 +68,7 @@ export default function HeaderMenu({ isAdmin, userEmail }: HeaderMenuProps) {
                   <Link
                     href="/dashboard/users"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors"
                   >
                     <Settings className="w-4 h-4" />
                     Quản lý Người dùng
@@ -76,7 +76,7 @@ export default function HeaderMenu({ isAdmin, userEmail }: HeaderMenuProps) {
                   <Link
                     href="/dashboard/data"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors"
                   >
                     <Database className="w-4 h-4" />
                     Sao lưu & Phục hồi

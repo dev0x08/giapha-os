@@ -124,7 +124,7 @@ export default function DataImportExport() {
           <button
             onClick={handleExport}
             disabled={isExporting}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-sm font-semibold transition-all disabled:opacity-50 relative z-10 shadow-md hover:shadow-lg"
+            className="btn-primary w-full"
           >
             {isExporting ? "Đang tải xuống..." : "Tải xuống bản sao lưu"}
           </button>
@@ -161,7 +161,7 @@ export default function DataImportExport() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={isImporting}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-stone-200 hover:border-stone-300 text-stone-700 hover:bg-stone-50 rounded-xl text-sm font-semibold transition-all disabled:opacity-50 relative z-10 shadow-sm"
+            className="btn w-full"
           >
             {isImporting ? "Đang xử lý..." : "Chọn file JSON để phục hồi"}
           </button>

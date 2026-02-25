@@ -271,7 +271,7 @@ export default function MemberForm({
           </div>
 
           <div className="flex items-center sm:mt-7 mt-2">
-            <label className="flex items-center gap-3 cursor-pointer group">
+            <label className="flex items-center gap-3 group">
               <div className="relative flex items-center">
                 <input
                   type="checkbox"
@@ -341,7 +341,7 @@ export default function MemberForm({
                           setAvatarPreview(URL.createObjectURL(file));
                         }
                       }}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      className="absolute inset-0 w-full h-full opacity-0"
                     />
                     <button
                       type="button"
@@ -445,7 +445,7 @@ export default function MemberForm({
 
           <div className="md:col-span-2 bg-stone-50/50 p-5 rounded-2xl border border-stone-200/60 shadow-xs">
             <div className="flex flex-col gap-4">
-              <label className="flex items-center gap-3 cursor-pointer group">
+              <label className="flex items-center gap-3 group">
                 <div className="relative flex items-center">
                   <input
                     type="checkbox"
@@ -649,19 +649,11 @@ export default function MemberForm({
         transition={{ delay: 0.2 }}
         className="flex justify-end gap-3 sm:gap-4 pt-6"
       >
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="px-5 py-2.5 sm:py-3 border border-stone-200/80 shadow-sm text-sm font-bold rounded-xl text-stone-600 bg-white hover:bg-stone-50 hover:text-stone-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-500 cursor-pointer transition-all"
-        >
+        <button type="button" onClick={() => router.back()} className="btn">
           Hủy bỏ
         </button>
-        <button
-          type="submit"
-          disabled={loading}
-          className="px-6 py-2.5 sm:py-3 border border-transparent shadow-md text-sm font-bold rounded-xl text-white bg-linear-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer transition-all relative overflow-hidden flex items-center gap-2"
-        >
-          {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+        <button type="submit" disabled={loading} className="btn-primary">
+          {loading && <Loader2 className="size-4 animate-spin" />}
           {loading
             ? "Đang lưu..."
             : isEditing

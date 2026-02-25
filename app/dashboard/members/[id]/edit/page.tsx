@@ -1,6 +1,7 @@
 import MemberForm from "@/components/MemberForm";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 interface PageProps {
@@ -72,12 +73,12 @@ export default async function EditMemberPage({ params }: PageProps) {
         <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-800">
           Chỉnh Sửa Thành Viên
         </h1>
-        <a
+        <Link
           href={`/dashboard/members/${id}`}
           className="px-4 py-2 bg-stone-100/80 text-stone-700 rounded-lg hover:bg-stone-200 hover:text-stone-900 font-medium text-sm transition-all shadow-sm"
         >
           Hủy
-        </a>
+        </Link>
       </div>
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10 w-full flex-1">

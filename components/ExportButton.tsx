@@ -85,14 +85,14 @@ export default function ExportButton() {
       <button
         onClick={() => setShowMenu(!showMenu)}
         disabled={isExporting}
-        className="flex items-center gap-2 px-4 py-2 sm:py-2.5 h-[38px] sm:h-[44px] bg-white/60 hover:bg-white text-stone-600 hover:text-stone-900 transition-colors border border-stone-200/60 shadow-sm rounded-full backdrop-blur-sm text-sm font-semibold cursor-pointer shrink-0 disabled:opacity-50"
+        className="btn"
       >
         {isExporting ? (
           <Loader2 className="w-4 h-4 shrink-0 animate-spin" />
         ) : (
           <Download className="w-4 h-4 shrink-0" />
         )}
-        <span className="hidden sm:inline-block tracking-wide min-w-max">
+        <span className="tracking-wide min-w-max">
           {isExporting ? "Đang xuất..." : "Xuất file"}
         </span>
       </button>
@@ -108,14 +108,14 @@ export default function ExportButton() {
           >
             <button
               onClick={() => handleExport("png")}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors cursor-pointer text-left"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors text-left"
             >
               <FileImage className="w-4 h-4" />
               Lưu thành Ảnh (PNG)
             </button>
             <button
               onClick={() => handleExport("pdf")}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors cursor-pointer text-left"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-stone-700 hover:text-amber-700 hover:bg-amber-50 transition-colors text-left"
             >
               <FileText className="w-4 h-4" />
               Lưu thành PDF

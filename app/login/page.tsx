@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, KeyRound, Mail, Shield, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("giaphaos@homielab.com");
@@ -18,7 +18,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const hostname = window.location.hostname;
-      if (hostname === "localhost" || hostname === "giapha-os.homielab.com") {
+      if (hostname === "giapha-os.homielab.com") {
         setIsDemo(true);
         setEmail("giaphaos@homielab.com");
         setPassword("giaphaos");
@@ -27,7 +27,7 @@ export default function LoginPage() {
   }, []);
 
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const [isLogin, setIsLogin] = useState(true);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
