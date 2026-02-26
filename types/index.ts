@@ -55,6 +55,7 @@ export interface Relationship {
   person_b: string; // UUID
   note?: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 // Helper types for UI

@@ -39,6 +39,7 @@ interface RelationshipExport {
   person_a: string;
   person_b: string;
   created_at?: string;
+  updated_at?: string;
 }
 
 interface BackupPayload {
@@ -96,7 +97,7 @@ function sanitizePerson(
 
 function sanitizeRelationship(
   r: RelationshipExport,
-): Omit<RelationshipExport, "id" | "created_at"> {
+): Omit<RelationshipExport, "id" | "created_at" | "updated_at"> {
   return {
     type: r.type,
     person_a: r.person_a,
@@ -121,7 +122,7 @@ export async function exportData(): Promise<BackupPayload> {
 
   const { data: relationships, error: relationshipsError } = await supabase
     .from("relationships")
-    .select("id, type, person_a, person_b, created_at")
+    .select("id, type, person_a, person_b, created_at, updated_at")
     .order("created_at", { ascending: true });
 
   if (relationshipsError)
