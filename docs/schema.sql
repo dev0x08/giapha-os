@@ -233,7 +233,6 @@ BEGIN
   -- If no users exist yet, auto-confirm this first one
   IF NOT EXISTS (SELECT 1 FROM auth.users) THEN
     NEW.email_confirmed_at := NOW();
-    NEW.confirmed_at := NOW();
     NEW.last_sign_in_at := NOW();
   END IF;
   RETURN NEW;
@@ -346,6 +345,9 @@ END;
 $$;
 
 -- 4. Admin Create New User
+-- IMPORTANT: All token/string columns MUST be set to '' (empty string), NOT NULL.
+-- Supabase Auth's Go scanner crashes with "converting NULL to string is unsupported"
+-- if any of these fields are NULL.
 CREATE OR REPLACE FUNCTION public.admin_create_user(
   new_email text, 
   new_password text, 
@@ -368,13 +370,22 @@ BEGIN
 
     INSERT INTO auth.users (
         id, instance_id, aud, role, email, encrypted_password, 
-        email_confirmed_at, confirmed_at, -- Auto-verify
+        email_confirmed_at,         -- Auto-verify: skip email confirmation
+        confirmation_token,         -- Must be '' not NULL (Supabase Auth Go scanner)
+        recovery_token,             -- Must be '' not NULL
+        email_change_token_new,     -- Must be '' not NULL
+        email_change_token_current, -- Must be '' not NULL
+        reauthentication_token,     -- Must be '' not NULL
+        email_change,               -- Must be '' not NULL
+        phone_change,               -- Must be '' not NULL
+        phone_change_token,         -- Must be '' not NULL
         raw_app_meta_data, raw_user_meta_data, created_at, updated_at
     )
     VALUES (
         new_id, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated',
         new_email, extensions.crypt(new_password, extensions.gen_salt('bf')),
-        now(), now(), -- Verified
+        now(),
+        '', '', '', '', '', '', '', '',
         '{"provider":"email","providers":["email"]}', '{}', now(), now()
     );
 

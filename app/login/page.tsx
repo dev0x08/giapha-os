@@ -1,5 +1,6 @@
 "use client";
 
+import config from "@/app/config";
 import Footer from "@/components/Footer";
 import { createClient } from "@/utils/supabase/client";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,7 +19,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const hostname = window.location.hostname;
-      if (hostname === "giapha-os.homielab.com") {
+      if (hostname === config.demoDomain) {
         setIsDemo(true);
         setEmail("giaphaos@homielab.com");
         setPassword("giaphaos");

@@ -6,12 +6,19 @@ import {
   deleteUser,
   toggleUserStatus,
 } from "@/app/actions/user";
+import config from "@/app/config";
 import { AdminUserData, UserRole } from "@/types";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface AdminUserListProps {
   initialUsers: AdminUserData[];
   currentUserId: string;
+}
+
+interface Notification {
+  message: string;
+  type: "success" | "error" | "info";
 }
 
 export default function AdminUserList({
@@ -22,26 +29,57 @@ export default function AdminUserList({
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [notification, setNotification] = useState<Notification | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsDemo(window.location.hostname === config.demoDomain);
+    }
+  }, []);
+
+  const showNotification = (
+    message: string,
+    type: "success" | "error" | "info" = "info",
+  ) => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
+    if (isDemo) {
+      showNotification(
+        "Đây là tài khoản demo cho mọi người sử dụng, vui lòng không thay đổi thông tin này.",
+        "info",
+      );
+      return;
+    }
     try {
       setLoadingId(userId);
       await changeUserRole(userId, newRole);
       setUsers(
         users.map((u) => (u.id === userId ? { ...u, role: newRole } : u)),
       );
+      showNotification("Đã cập nhật vai trò người dùng thành công.", "success");
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert("Lỗi khi đổi quyền: " + error.message);
-      } else {
-        alert("Lỗi không xác định khi đổi quyền");
-      }
+      const msg =
+        error instanceof Error
+          ? error.message
+          : "Lỗi không xác định khi đổi quyền";
+      showNotification(msg, "error");
     } finally {
       setLoadingId(null);
     }
   };
 
   const handleStatusChange = async (userId: string, newStatus: boolean) => {
+    if (isDemo) {
+      showNotification(
+        "Đây là tài khoản demo cho mọi người sử dụng, vui lòng không thay đổi thông tin này.",
+        "info",
+      );
+      return;
+    }
     try {
       setLoadingId(userId);
       await toggleUserStatus(userId, newStatus);
@@ -50,18 +88,29 @@ export default function AdminUserList({
           u.id === userId ? { ...u, is_active: newStatus } : u,
         ),
       );
+      showNotification(
+        `Đã ${newStatus ? "duyệt" : "khoá"} người dùng thành công.`,
+        "success",
+      );
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert("Lỗi khi đổi trạng thái: " + error.message);
-      } else {
-        alert("Lỗi không xác định khi đổi trạng thái");
-      }
+      const msg =
+        error instanceof Error
+          ? error.message
+          : "Lỗi không xác định khi đổi trạng thái";
+      showNotification(msg, "error");
     } finally {
       setLoadingId(null);
     }
   };
 
   const handleDelete = async (userId: string) => {
+    if (isDemo) {
+      showNotification(
+        "Đây là tài khoản demo cho mọi người sử dụng, vui lòng không thay đổi thông tin này.",
+        "info",
+      );
+      return;
+    }
     if (
       !confirm(
         "Bạn có chắc chắn muốn xóa user này khỏi hệ thống vĩnh viễn không?",
@@ -72,12 +121,13 @@ export default function AdminUserList({
       setLoadingId(userId);
       await deleteUser(userId);
       setUsers(users.filter((u) => u.id !== userId));
+      showNotification("Đã xóa người dùng thành công.", "success");
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert("Lỗi khi xoá user: " + error.message);
-      } else {
-        alert("Lỗi không xác định khi xoá user");
-      }
+      const msg =
+        error instanceof Error
+          ? error.message
+          : "Lỗi không xác định khi xoá user";
+      showNotification(msg, "error");
     } finally {
       setLoadingId(null);
     }
@@ -85,28 +135,101 @@ export default function AdminUserList({
 
   const handleCreateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isDemo) {
+      showNotification(
+        "Đây là trang demo, chức năng tạo người dùng bị hạn chế.",
+        "info",
+      );
+      setIsCreateModalOpen(false);
+      return;
+    }
     setIsCreating(true);
     const formData = new FormData(e.currentTarget);
     try {
       await adminCreateUser(formData);
-      alert("Tạo người dùng thành công! Họ có thể đăng nhập ngay bây giờ.");
+      showNotification(
+        "Tạo người dùng thành công! Họ có thể đăng nhập ngay bây giờ.",
+        "success",
+      );
       setIsCreateModalOpen(false);
-      // Let Server Action revalidate and refresh the page next time,
-      // or we can just reload the page to get the new list.
-      window.location.reload();
+      setTimeout(() => window.location.reload(), 1500);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert("Lỗi khi tạo user: " + error.message);
-      } else {
-        alert("Lỗi không xác định khi tạo user");
-      }
+      const msg =
+        error instanceof Error
+          ? error.message
+          : "Lỗi không xác định khi tạo user";
+      showNotification(msg, "error");
     } finally {
       setIsCreating(false);
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            className={`fixed top-1/2 left-1/2 z-100 px-6 py-3 rounded-xl shadow-lg border backdrop-blur-md flex items-center gap-3 min-w-[320px] max-w-[90vw] ${
+              notification.type === "success"
+                ? "bg-emerald-50/90 border-emerald-200 text-emerald-800"
+                : notification.type === "error"
+                  ? "bg-red-50/90 border-red-200 text-red-800"
+                  : "bg-amber-50/90 border-amber-200 text-amber-800"
+            }`}
+          >
+            {notification.type === "success" && (
+              <svg
+                className="size-5 shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            )}
+            {notification.type === "error" && (
+              <svg
+                className="size-5 shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            )}
+            {notification.type === "info" && (
+              <svg
+                className="size-5 shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            )}
+            <p className="text-sm font-medium">{notification.message}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="flex justify-end">
         <button
           onClick={() => setIsCreateModalOpen(true)}
