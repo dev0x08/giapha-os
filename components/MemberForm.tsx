@@ -232,7 +232,7 @@ export default function MemberForm({
         className="bg-white/80 backdrop-blur-md p-5 sm:p-8 rounded-2xl shadow-sm border border-stone-200/80"
       >
         <h3 className="text-lg sm:text-xl font-serif font-bold text-stone-800 mb-6 border-b border-stone-100 pb-4 flex items-center gap-2">
-          <User className="w-5 h-5 text-amber-600" />
+          <User className="size-5 text-amber-600" />
           Thông tin chung
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -265,7 +265,7 @@ export default function MemberForm({
                 <option value="other">Khác</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-stone-500">
-                <Settings2 className="w-4 h-4" />
+                <Settings2 className="size-4" />
               </div>
             </div>
           </div>
@@ -279,14 +279,14 @@ export default function MemberForm({
                   onChange={(e) => setIsInLaw(e.target.checked)}
                   className="peer sr-only"
                 />
-                <div className="w-5 h-5 border-2 border-stone-300 rounded peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-colors flex items-center justify-center">
+                <div className="size-5 border-2 border-stone-300 rounded peer-checked:bg-amber-500 peer-checked:border-amber-500 transition-colors flex items-center justify-center">
                   <motion.svg
                     initial={false}
                     animate={{
                       opacity: isInLaw ? 1 : 0,
                       scale: isInLaw ? 1 : 0.5,
                     }}
-                    className="w-3 h-3 text-white pointer-events-none"
+                    className="size-3 text-white pointer-events-none"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -347,7 +347,7 @@ export default function MemberForm({
                       type="button"
                       className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200/50 hover:bg-amber-100 hover:border-amber-300 transition-colors rounded-lg"
                     >
-                      <ImageIcon className="w-4 h-4" />
+                      <ImageIcon className="size-4" />
                       Chọn ảnh mới
                     </button>
                   </div>
@@ -391,7 +391,7 @@ export default function MemberForm({
                       }}
                       className="flex items-center gap-2 text-sm text-rose-600 hover:text-rose-700 font-medium px-4 py-2 border border-rose-200 rounded-lg bg-rose-50 hover:bg-rose-100 transition-colors"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="size-4" />
                       Xóa ảnh
                     </button>
                   )}
@@ -460,14 +460,14 @@ export default function MemberForm({
                     }}
                     className="peer sr-only"
                   />
-                  <div className="w-5 h-5 border-2 border-stone-300 rounded peer-checked:bg-stone-600 peer-checked:border-stone-600 transition-colors flex items-center justify-center">
+                  <div className="size-5 border-2 border-stone-300 rounded peer-checked:bg-stone-600 peer-checked:border-stone-600 transition-colors flex items-center justify-center">
                     <motion.svg
                       initial={false}
                       animate={{
                         opacity: isDeceased ? 1 : 0,
                         scale: isDeceased ? 1 : 0.5,
                       }}
-                      className="w-3 h-3 text-white pointer-events-none"
+                      className="size-3 text-white pointer-events-none"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -571,7 +571,7 @@ export default function MemberForm({
 
           <h3 className="text-lg sm:text-xl font-serif font-bold text-amber-900 mb-6 border-b border-amber-200/50 pb-4 flex items-center gap-2 relative z-10">
             <span className="p-1.5 bg-amber-100/80 text-amber-700 rounded-lg shadow-xs">
-              <Lock className="w-4 h-4" />
+              <Lock className="size-4" />
             </span>
             <span>Thông tin riêng tư</span>
             <span className="text-[10px] ml-auto sm:ml-2 font-bold bg-amber-200/80 text-amber-800 uppercase tracking-wider px-2.5 py-1 rounded-md shadow-xs border border-amber-300/60">
@@ -581,7 +581,7 @@ export default function MemberForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
             <div>
               <label className="flex items-center gap-1.5 text-sm font-semibold text-amber-900/80 mb-1.5">
-                <Phone className="w-4 h-4" /> Số điện thoại
+                <Phone className="size-4" /> Số điện thoại
               </label>
               <input
                 type="tel"
@@ -593,7 +593,7 @@ export default function MemberForm({
               />
               {isDeceased && (
                 <p className="text-[11px] font-medium text-rose-500 mt-1.5 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
+                  <AlertCircle className="size-3" />
                   Không thể nhập SĐT cho người đã mất
                 </p>
               )}
@@ -601,7 +601,7 @@ export default function MemberForm({
 
             <div>
               <label className="flex items-center gap-1.5 text-sm font-semibold text-amber-900/80 mb-1.5">
-                <Briefcase className="w-4 h-4" /> Nghề nghiệp
+                <Briefcase className="size-4" /> Nghề nghiệp
               </label>
               <input
                 type="text"
@@ -614,7 +614,7 @@ export default function MemberForm({
 
             <div className="md:col-span-2">
               <label className="flex items-center gap-1.5 text-sm font-semibold text-amber-900/80 mb-1.5">
-                <MapPin className="w-4 h-4" /> Nơi ở hiện tại
+                <MapPin className="size-4" /> Nơi ở hiện tại
               </label>
               <input
                 type="text"
@@ -636,7 +636,7 @@ export default function MemberForm({
             exit={{ opacity: 0, scale: 0.95 }}
             className="text-rose-700 text-sm font-medium bg-rose-50 border border-rose-200 p-4 rounded-xl flex items-start gap-3 shadow-sm"
           >
-            <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+            <AlertCircle className="size-5 shrink-0 mt-0.5" />
             <p>{error}</p>
           </motion.div>
         )}

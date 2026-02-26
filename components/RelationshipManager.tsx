@@ -667,7 +667,7 @@ export default function RelationshipManager({
                     ? searchResults
                     : recentMembers
                   ).map((p) => (
-                    <div
+                    <button
                       key={p.id}
                       onClick={() => {
                         setSelectedTargetId(p.id);
@@ -678,7 +678,7 @@ export default function RelationshipManager({
                     >
                       <div className="flex items-center gap-2">
                         <span
-                          className={`flex items-center justify-center text-[8px] font-bold w-3 h-3 rounded-full text-white shrink-0
+                          className={`flex items-center justify-center text-[8px] font-bold size-3 rounded-full text-white shrink-0
                                ${
                                  p.gender === "male"
                                    ? "bg-sky-500"
@@ -704,7 +704,7 @@ export default function RelationshipManager({
                           p.birth_day,
                         )}
                       </span>
-                    </div>
+                    </button>
                   ))}
                 </div>
               )}

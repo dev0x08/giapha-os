@@ -125,7 +125,10 @@ export default function MemberDetailModal() {
           className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 bg-stone-900/40 backdrop-blur-sm"
         >
           {/* Click-away backdrop */}
-          <div className="absolute inset-0" onClick={closeModal}></div>
+          <div
+            className="absolute inset-0 cursor-pointer"
+            onClick={closeModal}
+          ></div>
 
           {/* Modal Content */}
           <motion.div
@@ -158,22 +161,22 @@ export default function MemberDetailModal() {
               )}
               <button
                 onClick={closeModal}
-                className="w-10 h-10 flex items-center justify-center bg-stone-100/80 backdrop-blur-md text-stone-600 rounded-full hover:bg-stone-200 hover:text-stone-900 shadow-sm border border-stone-200/50 transition-colors"
+                className="size-10 flex items-center justify-center bg-stone-100/80 backdrop-blur-md text-stone-600 rounded-full hover:bg-stone-200 hover:text-stone-900 shadow-sm border border-stone-200/50 transition-colors"
                 aria-label="Đóng"
               >
-                <X className="w-5 h-5" />
+                <X className="size-5" />
               </button>
             </div>
 
             {loading ? (
               <div className="flex-1 min-h-[400px] flex items-center justify-center flex-col gap-4">
-                <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+                <div className="size-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-stone-500 font-medium">Đang tải...</p>
               </div>
             ) : error ? (
               <div className="flex-1 min-h-[400px] flex items-center justify-center flex-col gap-4 p-8 text-center">
                 <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-2 shadow-inner">
-                  <AlertCircle className="w-8 h-8" />
+                  <AlertCircle className="size-8" />
                 </div>
                 <p className="text-red-600 font-medium text-lg">{error}</p>
                 <button

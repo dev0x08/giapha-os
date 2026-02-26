@@ -51,7 +51,7 @@ export default function LandingHero({ siteName }: LandingHeroProps) {
             whileHover={{ scale: 1.05 }}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-amber-800 bg-white/60 backdrop-blur-md rounded-full shadow-[0_2px_10px_-3px_rgba(0,0,0,0.1)] border border-amber-200/50 relative overflow-hidden group"
           >
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <Sparkles className="size-4 text-amber-500" />
             Nền tảng gia phả hiện đại & bảo mật
             <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
           </motion.div>
@@ -79,7 +79,7 @@ export default function LandingHero({ siteName }: LandingHeroProps) {
           >
             <span className="relative z-10 flex items-center gap-3">
               Đăng nhập để xem thông tin
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+              <ArrowRight className="size-5 group-hover:translate-x-1.5 transition-transform" />
             </span>
           </Link>
         </motion.div>
@@ -90,17 +90,17 @@ export default function LandingHero({ siteName }: LandingHeroProps) {
         >
           {[
             {
-              icon: <Users className="w-6 h-6 text-amber-700" />,
+              icon: <Users className="size-6 text-amber-700" />,
               title: "Quản lý Thành viên",
               desc: "Cập nhật thông tin chi tiết, tiểu sử và hình ảnh của từng thành viên trong dòng họ một cách nhanh chóng và bảo mật.",
             },
             {
-              icon: <Network className="w-6 h-6 text-amber-700" />,
+              icon: <Network className="size-6 text-amber-700" />,
               title: "Sơ đồ Sáng tạo",
               desc: "Xem trực quan sơ đồ phả hệ, thế hệ và mối quan hệ gia đình với giao diện cây hiện đại, dễ thao tác.",
             },
             {
-              icon: <ShieldCheck className="w-6 h-6 text-amber-700" />,
+              icon: <ShieldCheck className="size-6 text-amber-700" />,
               title: "Bảo mật Tối đa",
               desc: "Dữ liệu riêng tư như số điện thoại, quê quán được phân quyền chặt chẽ, bảo vệ an toàn trên hệ thống đám mây.",
             },

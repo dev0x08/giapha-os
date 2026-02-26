@@ -124,7 +124,7 @@ export default function MemberDetailContent({
                 className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-stone-200/60 shadow-sm transition-all hover:shadow-md hover:border-amber-200/60"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
+                  <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></span>
                   <h3 className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">
                     Sinh
                   </h3>
@@ -161,7 +161,7 @@ export default function MemberDetailContent({
                   className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-stone-200/60 shadow-sm transition-all hover:shadow-md hover:border-amber-200/60"
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="w-2 h-2 rounded-full bg-stone-400 shadow-[0_0_8px_rgba(156,163,175,0.5)]"></span>
+                    <span className="size-2 rounded-full bg-stone-400 shadow-[0_0_8px_rgba(156,163,175,0.5)]"></span>
                     <h3 className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">
                       Mất
                     </h3>
@@ -207,7 +207,7 @@ export default function MemberDetailContent({
                     <Leaf className="absolute -bottom-4 -right-4 w-20 h-20 text-amber-500/10 rotate-12" />
                     <div className="flex items-center gap-2 mb-1.5 relative z-10">
                       <span
-                        className={`w-2 h-2 rounded-full ${ageData.isDeceased ? "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" : "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"}`}
+                        className={`size-2 rounded-full ${ageData.isDeceased ? "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" : "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"}`}
                       ></span>
                       <p className="text-[11px] font-bold text-amber-800/60 uppercase tracking-widest">
                         {ageData.isDeceased
@@ -237,7 +237,7 @@ export default function MemberDetailContent({
           <div className="lg:col-span-2 space-y-8">
             <motion.section variants={itemVariants}>
               <h2 className="text-base sm:text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
-                <Info className="w-5 h-5 text-amber-600" />
+                <Info className="size-5 text-amber-600" />
                 Ghi chú
               </h2>
               <div className="bg-white/80 backdrop-blur-sm p-5 sm:p-6 rounded-2xl border border-stone-200/60 shadow-sm">
@@ -253,7 +253,7 @@ export default function MemberDetailContent({
 
             <motion.section variants={itemVariants}>
               <h2 className="text-base sm:text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
-                <Users className="w-5 h-5 text-amber-600" />
+                <Users className="size-5 text-amber-600" />
                 Gia đình
               </h2>
               <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl border border-stone-200/60 shadow-sm relative z-0">

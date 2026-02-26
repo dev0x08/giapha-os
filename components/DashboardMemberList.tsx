@@ -68,7 +68,7 @@ export default function DashboardMemberList({
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/60 backdrop-blur-xl p-4 sm:p-5 rounded-2xl shadow-sm border border-stone-200/60 transition-all duration-300 relative z-10 w-full">
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto flex-1">
             <div className="relative flex-1 max-w-sm group">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
               <input
                 type="text"
                 placeholder="Tìm kiếm thành viên..."
@@ -77,9 +77,9 @@ export default function DashboardMemberList({
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto items-center">
               <div className="relative">
-                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-stone-400 pointer-events-none" />
                 <select
                   className="appearance-none bg-white/90 text-stone-700 w-full sm:w-40 pl-9 pr-8 py-2.5 rounded-xl border border-stone-200/80 shadow-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 hover:border-amber-300 font-medium text-sm transition-all focus:bg-white"
                   value={filterOption}
@@ -94,7 +94,7 @@ export default function DashboardMemberList({
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                   <svg
-                    className="w-4 h-4 text-stone-400"
+                    className="size-4 text-stone-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -110,7 +110,7 @@ export default function DashboardMemberList({
               </div>
 
               <div className="relative">
-                <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
+                <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-stone-400 pointer-events-none" />
                 <select
                   className="appearance-none bg-white/90 text-stone-700 w-full sm:w-52 pl-9 pr-8 py-2.5 rounded-xl border border-stone-200/80 shadow-sm focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 hover:border-amber-300 font-medium text-sm transition-all focus:bg-white"
                   value={sortOption}
@@ -123,7 +123,7 @@ export default function DashboardMemberList({
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                   <svg
-                    className="w-4 h-4 text-stone-400"
+                    className="size-4 text-stone-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

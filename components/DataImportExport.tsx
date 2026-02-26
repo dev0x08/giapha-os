@@ -108,7 +108,7 @@ export default function DataImportExport() {
 
           <div className="flex items-start gap-4 mb-4 relative z-10">
             <div className="p-3 bg-stone-100 rounded-xl text-stone-600">
-              <Download className="w-6 h-6" />
+              <Download className="size-6" />
             </div>
             <div>
               <h3 className="text-lg font-bold text-stone-800">
@@ -136,7 +136,7 @@ export default function DataImportExport() {
 
           <div className="flex items-start gap-4 mb-4 relative z-10">
             <div className="p-3 bg-rose-50 rounded-xl text-rose-600">
-              <Upload className="w-6 h-6" />
+              <Upload className="size-6" />
             </div>
             <div>
               <h3 className="text-lg font-bold text-stone-800">
@@ -176,7 +176,7 @@ export default function DataImportExport() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-stone-900/40 backdrop-blur-sm"
+              className="absolute inset-0 bg-stone-900/40 backdrop-blur-sm cursor-pointer"
               onClick={() => setShowConfirm(false)}
             />
             <motion.div
@@ -187,7 +187,7 @@ export default function DataImportExport() {
             >
               <div className="flex items-start gap-4 mb-5">
                 <div className="p-3 bg-rose-100/50 rounded-full text-rose-600 shrink-0 mt-1">
-                  <AlertTriangle className="w-6 h-6" />
+                  <AlertTriangle className="size-6" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-stone-800">
@@ -243,9 +243,9 @@ export default function DataImportExport() {
             }`}
           >
             {importStatus.type === "success" ? (
-              <CheckCircle2 className="w-5 h-5 shrink-0" />
+              <CheckCircle2 className="size-5 shrink-0" />
             ) : (
-              <AlertTriangle className="w-5 h-5 shrink-0" />
+              <AlertTriangle className="size-5 shrink-0" />
             )}
             <p className="text-sm font-medium">{importStatus.message}</p>
           </motion.div>

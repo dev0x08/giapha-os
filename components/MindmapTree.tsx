@@ -100,11 +100,11 @@ export default function MindmapTree({
 
         <div className="flex items-center gap-2 group relative z-10">
           {/* Expand/Collapse Toggle or spacer */}
-          <div className="w-5 h-5 flex items-center justify-center shrink-0 z-10 bg-transparent">
+          <div className="size-5 flex items-center justify-center shrink-0 z-10 bg-transparent">
             {hasChildren ? (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-5 h-5 flex items-center justify-center bg-white hover:bg-amber-50 border border-stone-200 rounded shadow-sm text-stone-500 hover:text-amber-600 focus:outline-none transition-colors"
+                className="size-5 flex items-center justify-center bg-white hover:bg-amber-50 border border-stone-200 rounded shadow-sm text-stone-500 hover:text-amber-600 focus:outline-none transition-colors"
                 aria-label={isExpanded ? "Thu gọn" : "Mở rộng"}
               >
                 {isExpanded ? (
@@ -124,7 +124,7 @@ export default function MindmapTree({
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`group/card relative flex flex-wrap items-center gap-2 bg-white/60 backdrop-blur-md rounded-2xl border border-stone-200/60 p-2 sm:p-2.5 shadow-sm hover:border-amber-300 hover:shadow-md hover:bg-white/90 transition-all duration-300 overflow-hidden
+                className={`group/card relative flex flex-wrap items-center gap-2 bg-white/60 backdrop-blur-md rounded-2xl border border-stone-200/60 p-2 sm:p-2.5 shadow-sm hover:border-amber-300 hover:shadow-md hover:bg-white/90 transition-all duration-300 overflow-hidden cursor-pointer
                   ${data.person.is_deceased ? "opacity-80 grayscale-[0.3]" : ""}`}
                 onClick={() => setMemberModalId(data.person.id)}
               >
@@ -138,7 +138,7 @@ export default function MindmapTree({
                     {showAvatar && (
                       <div className="relative shrink-0">
                         <div
-                          className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center text-white text-xs font-bold shadow-md ring-2 ring-white transition-transform duration-300 group-hover/card:scale-105
+                          className={`size-10 rounded-full overflow-hidden flex items-center justify-center text-white text-xs font-bold shadow-md ring-2 ring-white transition-transform duration-300 group-hover/card:scale-105
                       ${
                         data.person.gender === "male"
                           ? "bg-linear-to-br from-sky-400 to-sky-700"
@@ -168,7 +168,7 @@ export default function MindmapTree({
                       </span>
                       <span className="text-[11px] text-stone-500 font-medium truncate flex items-center gap-1">
                         <svg
-                          className="w-3 h-3 text-stone-400 shrink-0"
+                          className="size-3 text-stone-400 shrink-0"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -224,13 +224,13 @@ export default function MindmapTree({
                     <div className="flex flex-wrap gap-1.5 ml-1 pl-2 relative before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-px before:h-[70%] before:bg-stone-200/80">
                       {data.spouses.map((spouseData) => {
                         return (
-                          <div
+                          <button
                             key={spouseData.person.id}
                             onClick={(e) => {
                               e.stopPropagation();
                               setMemberModalId(spouseData.person.id);
                             }}
-                            className={`flex flex-col items-center gap-1 bg-stone-50/50 hover:bg-white rounded-xl p-1.5 border border-stone-200/60 hover:border-amber-300 transition-all shadow-sm hover:shadow-md group/spouse
+                            className={`flex flex-col items-center gap-1 bg-stone-50/50 hover:bg-white rounded-xl p-1.5 border border-stone-200/60 hover:border-amber-300 transition-all shadow-sm hover:shadow-md group/spouse cursor-pointer
                               ${spouseData.person.is_deceased ? "opacity-80 grayscale-[0.3]" : ""}`}
                             title={
                               spouseData.note ||
@@ -241,7 +241,7 @@ export default function MindmapTree({
                           >
                             {showAvatar && (
                               <div
-                                className={`w-8 h-8 rounded-full overflow-hidden flex items-center justify-center text-white text-[10px] font-bold shadow-sm ring-2 ring-white transition-transform duration-300 group-hover/spouse:scale-105
+                                className={`size-8 rounded-full overflow-hidden flex items-center justify-center text-white text-[10px] font-bold shadow-sm ring-2 ring-white transition-transform duration-300 group-hover/spouse:scale-105
                           ${
                             spouseData.person.gender === "male"
                               ? "bg-linear-to-br from-sky-400 to-sky-700"
@@ -269,7 +269,7 @@ export default function MindmapTree({
                             <span className="text-[10px] font-bold text-stone-600 truncate max-w-[50px] text-center">
                               {spouseData.person.full_name.split(" ").pop()}
                             </span>
-                          </div>
+                          </button>
                         );
                       })}
                     </div>
@@ -311,7 +311,7 @@ export default function MindmapTree({
     return (
       <div className="p-12 text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-stone-100 mb-4">
-          <Share2 className="w-8 h-8 text-stone-300" />
+          <Share2 className="size-8 text-stone-300" />
         </div>
         <p className="text-stone-500 font-medium tracking-wide">
           Gia phả trống

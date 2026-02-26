@@ -62,7 +62,7 @@ export default function RootSelector({
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <ChevronDown
-            className={`w-4 h-4 transition-colors ${isOpen ? "text-amber-600" : "text-stone-400 group-hover:text-stone-600"}`}
+            className={`size-4 transition-colors ${isOpen ? "text-amber-600" : "text-stone-400 group-hover:text-stone-600"}`}
           />
         </motion.div>
       </button>
@@ -78,7 +78,7 @@ export default function RootSelector({
           >
             <div className="p-2 border-b border-stone-100/80 bg-stone-50/50 backdrop-blur-sm sticky top-0 z-10">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-stone-400" />
                 <input
                   type="text"
                   className="w-full text-stone-900 placeholder-stone-400 bg-white border border-stone-200/80 rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 transition-all shadow-sm"
@@ -111,7 +111,7 @@ export default function RootSelector({
                           {person.full_name}
                         </span>
                         {isSelected && (
-                          <Check className="w-4 h-4 text-amber-600 shrink-0" />
+                          <Check className="size-4 text-amber-600 shrink-0" />
                         )}
                       </button>
                     );
@@ -119,8 +119,8 @@ export default function RootSelector({
                 </div>
               ) : (
                 <div className="px-4 py-8 text-center flex flex-col items-center justify-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mb-1">
-                    <Search className="w-5 h-5 text-stone-300" />
+                  <div className="size-10 rounded-full bg-stone-100 flex items-center justify-center mb-1">
+                    <Search className="size-5 text-stone-300" />
                   </div>
                   <div className="text-sm font-medium text-stone-600">
                     Không tìm thấy kết quả

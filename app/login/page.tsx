@@ -112,7 +112,7 @@ export default function LoginPage() {
               href="/"
               className="inline-flex items-center justify-center p-3.5 bg-white rounded-2xl mb-5 shadow-sm ring-1 ring-stone-100 hover:scale-105 hover:shadow-md transition-all duration-300"
             >
-              <Shield className="w-8 h-8 text-amber-600" />
+              <Shield className="size-8 text-amber-600" />
             </Link>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
               {isLogin ? "Đăng nhập" : "Đăng ký"}
@@ -145,7 +145,7 @@ export default function LoginPage() {
                   Email
                 </label>
                 <div className="relative flex items-center group">
-                  <Mail className="absolute left-3.5 w-5 h-5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
+                  <Mail className="absolute left-3.5 size-5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
                   <input
                     id="email-address"
                     name="email"
@@ -168,7 +168,7 @@ export default function LoginPage() {
                   Mật khẩu
                 </label>
                 <div className="relative flex items-center group">
-                  <KeyRound className="absolute left-3.5 w-5 h-5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
+                  <KeyRound className="absolute left-3.5 size-5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
                   <input
                     id="password"
                     name="password"
@@ -199,7 +199,7 @@ export default function LoginPage() {
                       Xác nhận mật khẩu
                     </label>
                     <div className="relative flex items-center group">
-                      <KeyRound className="absolute left-3.5 w-5 h-5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
+                      <KeyRound className="absolute left-3.5 size-5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
                       <input
                         id="confirmPassword"
                         name="confirmPassword"
@@ -273,7 +273,7 @@ export default function LoginPage() {
                 ) : (
                   <>
                     {isLogin ? "Đăng nhập" : "Tạo tài khoản"}
-                    {!isLogin && <UserPlus className="w-4 h-4 ml-1" />}
+                    {!isLogin && <UserPlus className="size-4 ml-1" />}
                   </>
                 )}
               </button>
@@ -308,7 +308,7 @@ export default function LoginPage() {
         href="/"
         className="absolute top-6 left-6 z-20 flex items-center gap-2 text-stone-500 hover:text-stone-900 font-semibold text-sm transition-all duration-300 group bg-white/60 px-5 py-2.5 rounded-full backdrop-blur-md shadow-sm border border-stone-200 hover:border-stone-300 hover:shadow-md"
       >
-        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+        <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />
         Trang chủ
       </Link>
 

@@ -57,7 +57,7 @@ export default function FamilyNodeCard({
 
       {/* Expand/Collapse Indicator */}
       {isExpandable && (
-        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white border border-stone-200/80 rounded-full w-6 h-6 flex items-center justify-center shadow-md z-20 text-stone-500 hover:text-amber-600 transition-colors">
+        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white border border-stone-200/80 rounded-full size-6 flex items-center justify-center shadow-md z-20 text-stone-500 hover:text-amber-600 transition-colors">
           {isExpanded ? (
             <Minus className="w-3.5 h-3.5" />
           ) : (
@@ -98,7 +98,7 @@ export default function FamilyNodeCard({
       {/* 2. Gender Icon + Name */}
       <div className="flex flex-col items-center justify-center gap-1 w-full px-0.5 sm:px-1 relative z-10">
         <span
-          className={`text-[10px] sm:text-[11px] md:text-xs font-bold text-center leading-tight line-clamp-2 transition-colors
+          className={`text-[10px] sm:text-[11px] md:text-xs font-bold text-center leading-tight line-clamp-2 transition-colors cursor-pointer
             ${onClickName ? "text-stone-800 group-hover:text-amber-700 hover:underline" : "text-stone-800 group-hover:text-amber-800"}`}
           title={person.full_name}
           onClick={(e) => {
@@ -132,8 +132,8 @@ export default function FamilyNodeCard({
   }
 
   return (
-    <div onClick={() => setMemberModalId(person.id)} className="block w-fit">
+    <button onClick={() => setMemberModalId(person.id)} className="block w-fit">
       {content}
-    </div>
+    </button>
   );
 }

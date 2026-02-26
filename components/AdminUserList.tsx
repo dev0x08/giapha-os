@@ -264,10 +264,10 @@ export default function AdminUserList({
               </h3>
               <button
                 onClick={() => setIsCreateModalOpen(false)}
-                className="text-stone-400 hover:text-stone-600 transition-colors w-8 h-8 flex items-center justify-center hover:bg-stone-100 rounded-full"
+                className="text-stone-400 hover:text-stone-600 transition-colors size-8 flex items-center justify-center hover:bg-stone-100 rounded-full"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="size-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
