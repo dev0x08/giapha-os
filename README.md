@@ -1,16 +1,20 @@
 # Gia Phả OS (Gia Phả Open Source)
 
-Đây là mã nguồn mở cho ứng dụng quản lý gia phả dòng họ, cung cấp giao diện trực quan để xem sơ đồ phả hệ, quản lý thành viên, tìm kiếm và lọc danh sách thành viên.
+Đây là mã nguồn mở cho ứng dụng quản lý gia phả dòng họ, cung cấp giao diện trực quan để xem sơ đồ phả hệ, quản lý thành viên và tìm kiếm danh xưng.
+
+Dự án ra đời từ nhu cầu thực tế: cần một hệ thống Cloud để con cháu ở nhiều nơi có thể cùng cập nhật thông tin (kết hôn, sinh con...), thay vì phụ thuộc vào một máy cục bộ. Việc tự triển khai mã nguồn mở giúp gia đình bạn nắm trọn quyền kiểm soát dữ liệu nhạy cảm, thay vì phó mặc cho các dịch vụ bên thứ ba. Ban đầu mình chỉ làm cho gia đình sử dụng, nhưng vì được nhiều người quan tâm nên mình quyết định chia sẻ công khai.
 
 Phù hợp với người Việt Nam.
 
 ## Các tính năng chính
 
-- **Hiển thị Sơ đồ Gia phả đa dạng**: Hỗ trợ xem dạng Sơ đồ cây (Tree) và Sơ đồ tư duy (Mindmap).
-- **Quản lý Thành viên**: Thêm, sửa, xóa thông tin thành viên chi tiết (ngày sinh, ngày mất, avatar, ghi chú).
-- **Phân loại thành viên Rõ ràng**: Phân loại tự động các nhãn dâu/rể, tình trạng đã mất, v.v.
-- **Xác thực và Phân quyền**: Tích hợp với Supabase Auth. Dữ liệu thành viên nhạy cảm (số điện thoại, nơi ở...) được bảo mật bằng Row Level Security (RLS) của PostgreSQL, chỉ Admin mới có quyền truy cập và chỉnh sửa.
-- **Hỗ trợ Thiết bị di động**: Giao diện (UI/UX) tối ưu và phản hồi trên các thiết bị di động.
+- **Sơ đồ trực quan**: Xem gia phả dạng Cây (Tree) và Sơ đồ tư duy (Mindmap).
+- **Tìm danh xưng**: Tự động xác định cách gọi tên (Bác, Chú, Cô, Dì...) chính xác.
+- **Quản lý thành viên**: Lưu trữ thông tin, avatar và sắp xếp thứ tự nhánh dòng họ.
+- **Thống kê & Sự kiện**: Theo dõi ngày giỗ và các chỉ số nhân khẩu học của dòng họ.
+- **Sao lưu dữ liệu**: Xuất/nhập file JSON để lưu trữ hoặc di chuyển dễ dàng.
+- **Bảo mật**: Phân quyền Admin và bảo vệ dữ liệu bằng Supabase.
+- **Đa thiết bị**: Giao diện hiện đại, tối ưu cho cả máy tính và điện thoại.
 
 ## Demo
 
