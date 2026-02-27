@@ -66,7 +66,7 @@ export default function RootSelector({
     <div className="relative w-full sm:w-72" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full flex items-center gap-3 bg-white/60 backdrop-blur-md border rounded-xl px-3 py-2 text-sm shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500/20 group
+        className={`w-full flex items-center gap-3 bg-white/60 border rounded-xl px-3 py-2 text-sm shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-500/20 group
           ${isOpen ? "border-amber-300 bg-white shadow-md ring-2 ring-amber-500/10" : "border-stone-200/60 hover:border-amber-300 hover:bg-white/90 hover:shadow-md"}`}
       >
         <div className="relative shrink-0">
@@ -230,4 +230,3 @@ export default function RootSelector({
     </div>
   );
 }
-

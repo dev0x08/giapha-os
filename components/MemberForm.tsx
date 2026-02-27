@@ -246,7 +246,7 @@ export default function MemberForm({
         variants={formSectionVariants}
         initial="hidden"
         animate="show"
-        className="bg-white/80 backdrop-blur-md p-5 sm:p-8 rounded-2xl shadow-sm border border-stone-200/80"
+        className="bg-white/80 p-5 sm:p-8 rounded-2xl shadow-sm border border-stone-200/80"
       >
         <h3 className="text-lg sm:text-xl font-serif font-bold text-stone-800 mb-6 border-b border-stone-100 pb-4 flex items-center gap-2">
           <User className="size-5 text-amber-600" />
@@ -600,7 +600,7 @@ export default function MemberForm({
           initial="hidden"
           animate="show"
           transition={{ delay: 0.1 }}
-          className="bg-linear-to-br from-amber-50/80 to-stone-50/80 backdrop-blur-md p-5 sm:p-8 rounded-2xl border border-amber-200/50 shadow-sm relative overflow-hidden"
+          className="bg-linear-to-br from-amber-50/80 to-stone-50/80 p-5 sm:p-8 rounded-2xl border border-amber-200/50 shadow-sm relative overflow-hidden"
         >
           {/* Decorative Background Icon */}
           <Lock className="absolute -right-6 -bottom-6 w-32 h-32 text-amber-500/5 rotate-12" />

@@ -32,6 +32,8 @@ export default function ExportButton() {
       const element = document.getElementById("export-container");
       if (!element) throw new Error("Không tìm thấy vùng dữ liệu để xuất.");
 
+      element.classList.add("exporting");
+
       const exportOptions = {
         cacheBust: true,
         backgroundColor: "#f5f5f4",
@@ -76,6 +78,10 @@ export default function ExportButton() {
       console.error("Export error:", error);
       alert("Đã xảy ra lỗi khi xuất file. Vui lòng thử lại.");
     } finally {
+      const element = document.getElementById("export-container");
+      if (element) {
+        element.classList.remove("exporting");
+      }
       setIsExporting(false);
     }
   };

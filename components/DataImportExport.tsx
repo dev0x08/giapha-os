@@ -103,7 +103,7 @@ export default function DataImportExport() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Export Card */}
-        <div className="bg-white/80 backdrop-blur-md border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+        <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none group-hover:bg-amber-300/30 transition-colors" />
 
           <div className="flex items-start gap-4 mb-4 relative z-10">
@@ -131,7 +131,7 @@ export default function DataImportExport() {
         </div>
 
         {/* Import Card */}
-        <div className="bg-white/80 backdrop-blur-md border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+        <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-32 h-32 bg-rose-200/20 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none group-hover:bg-rose-300/30 transition-colors" />
 
           <div className="flex items-start gap-4 mb-4 relative z-10">

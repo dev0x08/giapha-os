@@ -172,7 +172,7 @@ export default function MemberDetailModal() {
                 /* In edit mode — show "Back to detail" button */
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-stone-100/80 backdrop-blur-md text-stone-700 rounded-full hover:bg-stone-200 font-semibold text-sm shadow-sm border border-stone-200/50 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-stone-100/80 text-stone-700 rounded-full hover:bg-stone-200 font-semibold text-sm shadow-sm border border-stone-200/50 transition-colors"
                 >
                   <ArrowLeft className="size-4" />
                   <span className="hidden sm:inline">Xem chi tiết</span>
@@ -183,14 +183,14 @@ export default function MemberDetailModal() {
                   <>
                     <Link
                       href={`/dashboard/members/${person.id}`}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 backdrop-blur-md text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
                     >
                       <ExternalLink className="size-4" />
                       <span className="hidden sm:inline">Xem chi tiết</span>
                     </Link>
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 backdrop-blur-md text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
+                      className="flex items-center gap-1.5 px-4 py-2 bg-amber-100/80 text-amber-800 rounded-full hover:bg-amber-200 font-semibold text-sm shadow-sm border border-amber-200/50 transition-colors"
                     >
                       <Edit2 className="size-4" />
                       <span className="hidden sm:inline">Chỉnh sửa</span>
@@ -200,7 +200,7 @@ export default function MemberDetailModal() {
               )}
               <button
                 onClick={closeModal}
-                className="size-10 flex items-center justify-center bg-stone-100/80 backdrop-blur-md text-stone-600 rounded-full hover:bg-stone-200 hover:text-stone-900 shadow-sm border border-stone-200/50 transition-colors"
+                className="size-10 flex items-center justify-center bg-stone-100/80 text-stone-600 rounded-full hover:bg-stone-200 hover:text-stone-900 shadow-sm border border-stone-200/50 transition-colors"
                 aria-label="Đóng"
               >
                 <X className="size-5" />

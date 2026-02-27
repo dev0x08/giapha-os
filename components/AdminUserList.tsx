@@ -173,7 +173,7 @@ export default function AdminUserList({
             initial={{ opacity: 0, y: -20, x: "-50%" }}
             animate={{ opacity: 1, y: 0, x: "-50%" }}
             exit={{ opacity: 0, y: -20, x: "-50%" }}
-            className={`fixed top-1/2 left-1/2 z-100 px-6 py-3 rounded-xl shadow-lg border backdrop-blur-md flex items-center gap-3 min-w-[320px] max-w-[90vw] ${
+            className={`fixed top-1/2 left-1/2 z-100 px-6 py-3 rounded-xl shadow-lg border flex items-center gap-3 min-w-[320px] max-w-[90vw] ${
               notification.type === "success"
                 ? "bg-emerald-50/90 border-emerald-200 text-emerald-800"
                 : notification.type === "error"

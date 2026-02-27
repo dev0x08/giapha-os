@@ -5,22 +5,31 @@ import { formatDisplayDate } from "@/utils/dateHelpers";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronRight, Share2 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useDashboard } from "./DashboardContext";
 import DefaultAvatar from "./DefaultAvatar";
+import ExportButton from "./ExportButton";
 
 interface MindmapTreeProps {
   personsMap: Map<string, Person>;
   relationships: Relationship[];
   roots: Person[];
+  canEdit?: boolean;
 }
 
 export default function MindmapTree({
   personsMap,
   relationships,
   roots,
+  canEdit,
 }: MindmapTreeProps) {
   const { showAvatar, setMemberModalId } = useDashboard();
+  const [portalNode, setPortalNode] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setPortalNode(document.getElementById("tree-toolbar-portal"));
+  }, []);
 
   // Helper function to resolve tree connections for a person
   const getTreeData = (personId: string) => {
@@ -124,7 +133,7 @@ export default function MindmapTree({
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`group/card relative flex flex-wrap items-center gap-2 bg-white/60 backdrop-blur-md rounded-2xl border border-stone-200/60 p-2 sm:p-2.5 shadow-sm hover:border-amber-300 hover:shadow-md hover:bg-white/90 transition-all duration-300 overflow-hidden cursor-pointer
+                className={`group/card relative flex flex-wrap items-center gap-2 bg-white/60 rounded-2xl border border-stone-200/60 p-2 sm:p-2.5 shadow-sm hover:border-amber-300 hover:shadow-md hover:bg-white/90 transition-all duration-300 overflow-hidden cursor-pointer
                   ${data.person.is_deceased ? "opacity-80 grayscale-[0.3]" : ""}`}
                 onClick={() => setMemberModalId(data.person.id)}
               >
@@ -322,8 +331,21 @@ export default function MindmapTree({
 
   return (
     <div className="w-full h-full relative p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-140px)] flex justify-start lg:justify-center overflow-x-auto">
+      {/* Export Toolbar */}
+      {canEdit &&
+        portalNode &&
+        createPortal(
+          <div className="flex flex-wrap justify-center items-center gap-2 w-max">
+            <ExportButton />
+          </div>,
+          portalNode,
+        )}
+
       {/* Root Container */}
-      <div id="export-container" className="font-sans min-w-max pb-20 p-8">
+      <div
+        id="export-container"
+        className="font-sans min-w-max pb-20 p-10 px-8"
+      >
         {roots.map((root, index) => (
           <MindmapNode
             key={root.id}

@@ -54,7 +54,7 @@ export default async function LineagePage() {
 
         {/* Info cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-stone-200/60 shadow-sm">
+          <div className="bg-white/80 rounded-2xl p-5 border border-stone-200/60 shadow-sm">
             <div className="flex items-start gap-3">
               <span className="text-2xl">🌳</span>
               <div>
@@ -69,7 +69,7 @@ export default async function LineagePage() {
               </div>
             </div>
           </div>
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 border border-stone-200/60 shadow-sm">
+          <div className="bg-white/80 rounded-2xl p-5 border border-stone-200/60 shadow-sm">
             <div className="flex items-start gap-3">
               <span className="text-2xl">👶</span>
               <div>
@@ -87,7 +87,7 @@ export default async function LineagePage() {
         </div>
 
         {/* Manager */}
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-stone-200/60 shadow-sm p-5 sm:p-8">
+        <div className="bg-white/80 rounded-2xl border border-stone-200/60 shadow-sm p-5 sm:p-8">
           <LineageManager persons={persons} relationships={relationships} />
         </div>
       </div>

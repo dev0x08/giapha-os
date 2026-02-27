@@ -291,7 +291,7 @@ export default function KinshipFinder({ persons, relationships }: Props) {
   return (
     <div className="space-y-6">
       {/* ── Selector row ── */}
-      <div className="bg-white/80 backdrop-blur-md border border-stone-200/60 rounded-2xl p-4 sm:p-6 shadow-sm">
+      <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4">
           <PersonSelector
             label="Thành viên A"

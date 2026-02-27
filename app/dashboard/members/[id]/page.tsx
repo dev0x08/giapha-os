@@ -84,7 +84,7 @@ export default async function MemberDetailPage({ params }: PageProps) {
       </div>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10 w-full flex-1">
-        <div className="bg-white/60 backdrop-blur-md rounded-2xl shadow-sm border border-stone-200/60 overflow-hidden hover:shadow-md transition-shadow duration-300">
+        <div className="bg-white/60 rounded-2xl shadow-sm border border-stone-200/60 overflow-hidden hover:shadow-md transition-shadow duration-300">
           <MemberDetailContent
             person={person}
             privateData={privateData}
