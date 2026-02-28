@@ -10,7 +10,6 @@ interface FamilyNodeCardProps {
   person: Person;
   role?: string; // e.g., "Chồng", "Vợ"
   note?: string | null;
-  isMainNode?: boolean; // Determines specific border/shadow styling
   onClickCard?: () => void;
   onClickName?: (e: React.MouseEvent) => void;
   isExpandable?: boolean;
@@ -21,7 +20,6 @@ interface FamilyNodeCardProps {
 
 export default function FamilyNodeCard({
   person,
-  isMainNode = false,
   onClickCard,
   onClickName,
   isExpandable = false,
@@ -37,7 +35,7 @@ export default function FamilyNodeCard({
     <div
       onClick={onClickCard}
       className={`group py-2 px-1 w-20 sm:w-24 md:w-28 flex flex-col items-center justify-start transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative bg-white/70 rounded-2xl
-        ${isMainNode && isDeceased ? "grayscale-[0.4] opacity-80" : ""}
+        ${isDeceased ? "grayscale-[0.4] opacity-80" : ""}
       `}
     >
       {isRingVisible && (

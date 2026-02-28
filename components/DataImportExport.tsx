@@ -10,13 +10,14 @@ import PersonSelector from "./PersonSelector";
 export default function DataImportExport() {
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [importStatus, setImportStatus] = useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const [persons, setPersons] = useState<Person[]>([]);
   const [exportRootId, setExportRootId] = useState<string | null>(null);
@@ -43,6 +44,12 @@ export default function DataImportExport() {
       setIsExporting(true);
       const rootParam = exportRootId || undefined;
       const data = await exportData(rootParam);
+
+      if ("error" in data) {
+        setExportError(data.error);
+        setTimeout(() => setExportError(null), 5000);
+        return;
+      }
 
       if (format === "csv") {
         const { exportToCsvZip } = await import("@/utils/csv");
@@ -84,7 +91,10 @@ export default function DataImportExport() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error: unknown) {
-      alert(error instanceof Error ? error.message : "Tải xuống thất bại.");
+      setExportError(
+        error instanceof Error ? error.message : "Tải xuống thất bại.",
+      );
+      setTimeout(() => setExportError(null), 5000);
     } finally {
       setIsExporting(false);
     }
@@ -151,9 +161,20 @@ export default function DataImportExport() {
         relationships: payload.relationships,
       });
 
+      if ("error" in result) {
+        setImportStatus({
+          type: "error",
+          message: result.error,
+        });
+        setShowConfirm(false);
+        setSelectedFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
       setImportStatus({
         type: "success",
-        message: `Phục hồi thành công! Đã nhập ${result.imported.persons} thành viên và ${result.imported.relationships} quan hệ.`,
+        message: `Phục hồi thành công! Đã nhập ${result.imported?.persons} thành viên và ${result.imported?.relationships} quan hệ.`,
       });
       setShowConfirm(false);
       setSelectedFile(null);
@@ -235,6 +256,22 @@ export default function DataImportExport() {
               {isExporting ? "Đang xử lý..." : "Xuất CSV (Zip)"}
             </button>
           </div>
+
+          <AnimatePresence>
+            {exportError && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-4"
+              >
+                <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-100 flex items-center gap-2 text-left">
+                  <AlertTriangle className="w-5 h-5 shrink-0 text-red-500" />
+                  <span>{exportError}</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Import Card */}

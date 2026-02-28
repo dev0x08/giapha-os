@@ -58,7 +58,7 @@ async function verifyAdmin() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Vui lòng đăng nhập.");
+  if (!user) return { error: "Vui lòng đăng nhập." };
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -67,7 +67,7 @@ async function verifyAdmin() {
     .single();
 
   if (profile?.role !== "admin")
-    throw new Error("Từ chối truy cập. Chỉ admin mới có quyền này.");
+    return { error: "Từ chối truy cập. Chỉ admin mới có quyền này." };
 
   return supabase;
 }
@@ -109,8 +109,10 @@ function sanitizeRelationship(
 
 export async function exportData(
   exportRootId?: string,
-): Promise<BackupPayload> {
-  const supabase = await verifyAdmin();
+): Promise<BackupPayload | { error: string }> {
+  const supabaseResult = await verifyAdmin();
+  if ("error" in supabaseResult) return supabaseResult;
+  const supabase = supabaseResult;
 
   // Fetch ALL persons and relationships first to perform traversal in memory.
   // This is safe since typical family trees are < 10,000 nodes, easily fitting in memory.
@@ -122,7 +124,7 @@ export async function exportData(
     .order("created_at", { ascending: true });
 
   if (personsError)
-    throw new Error("Lỗi tải dữ liệu persons: " + personsError.message);
+    return { error: "Lỗi tải dữ liệu persons: " + personsError.message };
 
   const { data: allRels, error: relationshipsError } = await supabase
     .from("relationships")
@@ -130,9 +132,9 @@ export async function exportData(
     .order("created_at", { ascending: true });
 
   if (relationshipsError)
-    throw new Error(
-      "Lỗi tải dữ liệu relationships: " + relationshipsError.message,
-    );
+    return {
+      error: "Lỗi tải dữ liệu relationships: " + relationshipsError.message,
+    };
 
   let exportPersons = (allPersons ?? []) as PersonExport[];
   let exportRels = (allRels ?? []) as RelationshipExport[];
@@ -199,14 +201,18 @@ export async function importData(
         relationships: Relationship[];
       },
 ) {
-  const supabase = await verifyAdmin();
+  const supabaseResult = await verifyAdmin();
+  if ("error" in supabaseResult) return supabaseResult;
+  const supabase = supabaseResult;
 
   if (!importPayload?.persons || !importPayload?.relationships) {
-    throw new Error("Dữ liệu không hợp lệ. Vui lòng kiểm tra lại file JSON.");
+    return { error: "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại file JSON." };
   }
 
   if (importPayload.persons.length === 0) {
-    throw new Error("File backup trống — không có thành viên nào để phục hồi.");
+    return {
+      error: "File backup trống — không có thành viên nào để phục hồi.",
+    };
   }
 
   // 1. Xoá relationships trước (FK constraint)
@@ -216,7 +222,7 @@ export async function importData(
     .neq("id", "00000000-0000-0000-0000-000000000000");
 
   if (delRelError)
-    throw new Error("Lỗi khi xoá relationships cũ: " + delRelError.message);
+    return { error: "Lỗi khi xoá relationships cũ: " + delRelError.message };
 
   // 2. Xoá persons
   const { error: delPersonsError } = await supabase
@@ -225,7 +231,7 @@ export async function importData(
     .neq("id", "00000000-0000-0000-0000-000000000000");
 
   if (delPersonsError)
-    throw new Error("Lỗi khi xoá persons cũ: " + delPersonsError.message);
+    return { error: "Lỗi khi xoá persons cũ: " + delPersonsError.message };
 
   // 3. Insert persons (sanitized — chỉ giữ các field schema hiện tại)
   const CHUNK = 200;
@@ -235,9 +241,9 @@ export async function importData(
     const chunk = persons.slice(i, i + CHUNK);
     const { error } = await supabase.from("persons").insert(chunk);
     if (error)
-      throw new Error(
-        `Lỗi khi import persons (chunk ${i / CHUNK + 1}): ${error.message}`,
-      );
+      return {
+        error: `Lỗi khi import persons (chunk ${i / CHUNK + 1}): ${error.message}`,
+      };
   }
 
   // 4. Insert relationships (stripped of id/created_at to avoid conflicts)
@@ -247,9 +253,9 @@ export async function importData(
     const chunk = relationships.slice(i, i + CHUNK);
     const { error } = await supabase.from("relationships").insert(chunk);
     if (error)
-      throw new Error(
-        `Lỗi khi import relationships (chunk ${i / CHUNK + 1}): ${error.message}`,
-      );
+      return {
+        error: `Lỗi khi import relationships (chunk ${i / CHUNK + 1}): ${error.message}`,
+      };
   }
 
   revalidatePath("/");

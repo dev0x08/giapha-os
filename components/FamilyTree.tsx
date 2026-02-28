@@ -190,7 +190,7 @@ export default function FamilyTree({
         <div className="node-container inline-flex flex-col items-center">
           {/* Main Person & Spouses Row */}
           <div className="flex relative z-10 bg-white rounded-2xl shadow-md border border-stone-200/80 transition-opacity">
-            <FamilyNodeCard person={data.person} isMainNode={true} />
+            <FamilyNodeCard person={data.person} />
 
             {data.spouses.length > 0 && (
               <>

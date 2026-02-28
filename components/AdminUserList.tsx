@@ -57,7 +57,13 @@ export default function AdminUserList({
     }
     try {
       setLoadingId(userId);
-      await changeUserRole(userId, newRole);
+      const result = await changeUserRole(userId, newRole);
+
+      if (result?.error) {
+        showNotification(result.error, "error");
+        return;
+      }
+
       setUsers(
         users.map((u) => (u.id === userId ? { ...u, role: newRole } : u)),
       );
@@ -83,7 +89,13 @@ export default function AdminUserList({
     }
     try {
       setLoadingId(userId);
-      await toggleUserStatus(userId, newStatus);
+      const result = await toggleUserStatus(userId, newStatus);
+
+      if (result?.error) {
+        showNotification(result.error, "error");
+        return;
+      }
+
       setUsers(
         users.map((u) =>
           u.id === userId ? { ...u, is_active: newStatus } : u,
@@ -120,7 +132,13 @@ export default function AdminUserList({
       return;
     try {
       setLoadingId(userId);
-      await deleteUser(userId);
+      const result = await deleteUser(userId);
+
+      if (result?.error) {
+        showNotification(result.error, "error");
+        return;
+      }
+
       setUsers(users.filter((u) => u.id !== userId));
       showNotification("Đã xóa người dùng thành công.", "success");
     } catch (error: unknown) {
@@ -147,7 +165,13 @@ export default function AdminUserList({
     setIsCreating(true);
     const formData = new FormData(e.currentTarget);
     try {
-      await adminCreateUser(formData);
+      const result = await adminCreateUser(formData);
+
+      if (result?.error) {
+        showNotification(result.error, "error");
+        return;
+      }
+
       showNotification(
         "Tạo người dùng thành công! Họ có thể đăng nhập ngay bây giờ.",
         "success",
