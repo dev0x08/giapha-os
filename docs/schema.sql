@@ -156,13 +156,13 @@ CREATE POLICY "Admins can view all profiles" ON public.profiles FOR SELECT USING
 DROP POLICY IF EXISTS "Enable read access for authenticated users" ON public.persons;
 CREATE POLICY "Enable read access for authenticated users" ON public.persons FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "Admins can manage persons" ON public.persons;
 DROP POLICY IF EXISTS "Admins can insert persons" ON public.persons;
-CREATE POLICY "Admins can insert persons" ON public.persons FOR INSERT TO authenticated WITH CHECK (public.is_admin());
-
 DROP POLICY IF EXISTS "Admins can update persons" ON public.persons;
-CREATE POLICY "Admins can update persons" ON public.persons FOR UPDATE TO authenticated USING (public.is_admin());
-
 DROP POLICY IF EXISTS "Admins can delete persons" ON public.persons;
+
+CREATE POLICY "Admins can insert persons" ON public.persons FOR INSERT TO authenticated WITH CHECK (public.is_admin());
+CREATE POLICY "Admins can update persons" ON public.persons FOR UPDATE TO authenticated USING (public.is_admin());
 CREATE POLICY "Admins can delete persons" ON public.persons FOR DELETE TO authenticated USING (public.is_admin());
 
 -- PERSON_DETAILS_PRIVATE POLICIES
@@ -177,7 +177,13 @@ DROP POLICY IF EXISTS "Enable read access for authenticated users" ON public.rel
 CREATE POLICY "Enable read access for authenticated users" ON public.relationships FOR SELECT TO authenticated USING (true);
 
 DROP POLICY IF EXISTS "Admins can manage relationships" ON public.relationships;
-CREATE POLICY "Admins can manage relationships" ON public.relationships FOR ALL TO authenticated USING (public.is_admin());
+DROP POLICY IF EXISTS "Admins can insert relationships" ON public.relationships;
+DROP POLICY IF EXISTS "Admins can update relationships" ON public.relationships;
+DROP POLICY IF EXISTS "Admins can delete relationships" ON public.relationships;
+
+CREATE POLICY "Admins can insert relationships" ON public.relationships FOR INSERT TO authenticated WITH CHECK (public.is_admin());
+CREATE POLICY "Admins can update relationships" ON public.relationships FOR UPDATE TO authenticated USING (public.is_admin());
+CREATE POLICY "Admins can delete relationships" ON public.relationships FOR DELETE TO authenticated USING (public.is_admin());
 
 -- ==========================================
 -- TRIGGERS

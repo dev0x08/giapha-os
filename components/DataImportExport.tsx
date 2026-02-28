@@ -1,9 +1,11 @@
 "use client";
 
 import { exportData, importData } from "@/app/actions/data";
+import { Person } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, Download, Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import PersonSelector from "./PersonSelector";
 
 export default function DataImportExport() {
   const [isExporting, setIsExporting] = useState(false);
@@ -16,18 +18,67 @@ export default function DataImportExport() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleExport = async () => {
+  const [persons, setPersons] = useState<Person[]>([]);
+  const [exportRootId, setExportRootId] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchPersons() {
+      try {
+        const { createClient } = await import("@/utils/supabase/client");
+        const supabase = createClient();
+        const { data } = await supabase
+          .from("persons")
+          .select("id, full_name, birth_year, gender, avatar_url, generation")
+          .order("birth_year", { ascending: true, nullsFirst: false });
+        if (data) setPersons(data as Person[]);
+      } catch (err) {
+        console.error("Error fetching persons:", err);
+      }
+    }
+    fetchPersons();
+  }, []);
+
+  const handleExport = async (format: "json" | "gedcom" | "csv") => {
     try {
       setIsExporting(true);
-      const data = await exportData();
+      const rootParam = exportRootId || undefined;
+      const data = await exportData(rootParam);
 
-      const blob = new Blob([JSON.stringify(data, null, 2)], {
-        type: "application/json",
-      });
+      if (format === "csv") {
+        const { exportToCsvZip } = await import("@/utils/csv");
+        // @ts-expect-error: BackupPayload relationships type mismatch with Partial<Relationship>
+        const zipBlob = await exportToCsvZip(data);
+        const url = URL.createObjectURL(zipBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `giapha-export-${new Date().toISOString().split("T")[0]}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        return;
+      }
+
+      let content = "";
+      let type = "";
+      let extension = "";
+
+      if (format === "json") {
+        content = JSON.stringify(data, null, 2);
+        type = "application/json";
+        extension = "json";
+      } else {
+        const { exportToGedcom } = await import("@/utils/gedcom");
+        content = exportToGedcom(data);
+        type = "text/plain";
+        extension = "ged";
+      }
+
+      const blob = new Blob([content], { type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `giapha-export-${new Date().toISOString().split("T")[0]}.json`;
+      a.download = `giapha-export-${new Date().toISOString().split("T")[0]}.${extension}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -42,10 +93,24 @@ export default function DataImportExport() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.type !== "application/json" && !file.name.endsWith(".json")) {
+      const fileName = file.name.toLowerCase();
+      if (fileName.endsWith(".csv")) {
         setImportStatus({
           type: "error",
-          message: "Vui lòng chọn file JSON hợp lệ.",
+          message:
+            "Vui lòng phục hồi bằng file .zip được tạo ra từ chức năng Xuất CSV.",
+        });
+        return;
+      }
+
+      if (
+        !fileName.endsWith(".json") &&
+        !fileName.endsWith(".ged") &&
+        !fileName.endsWith(".zip")
+      ) {
+        setImportStatus({
+          type: "error",
+          message: "Vui lòng chọn file .json, .ged, hoặc .zip hợp lệ.",
         });
         return;
       }
@@ -63,11 +128,21 @@ export default function DataImportExport() {
       setImportStatus(null);
 
       const fileText = await selectedFile.text();
-      const payload = JSON.parse(fileText);
+      let payload;
+
+      if (selectedFile.name.toLowerCase().endsWith(".ged")) {
+        const { parseGedcom } = await import("@/utils/gedcom");
+        payload = parseGedcom(fileText);
+      } else if (selectedFile.name.toLowerCase().endsWith(".zip")) {
+        const { parseCsvZip } = await import("@/utils/csv");
+        payload = await parseCsvZip(selectedFile);
+      } else {
+        payload = JSON.parse(fileText);
+      }
 
       if (!payload.persons || !payload.relationships) {
         throw new Error(
-          "File JSON không chứa cấu trúc dữ liệu hợp lệ (thiếu persons hoặc relationships).",
+          "File không chứa cấu trúc dữ liệu hợp lệ (thiếu persons hoặc relationships).",
         );
       }
 
@@ -103,8 +178,11 @@ export default function DataImportExport() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Export Card */}
-        <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none group-hover:bg-amber-300/30 transition-colors" />
+        <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+          {/* Background Decor */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-amber-300/30 transition-colors" />
+          </div>
 
           <div className="flex items-start gap-4 mb-4 relative z-10">
             <div className="p-3 bg-stone-100 rounded-xl text-stone-600">
@@ -115,24 +193,56 @@ export default function DataImportExport() {
                 Sao lưu dữ liệu
               </h3>
               <p className="text-sm text-stone-500 mt-1">
-                Tải xuống toàn bộ dữ liệu thành viên và khoảng quan hệ gia phả
-                dưới định dạng file JSON.
+                Tải xuống định dạng file JSON, GEDCOM hoặc CSV (Zip). Chọn một
+                điểm gốc bên dưới để chỉ sao lưu nhánh gia đình đó, hoặc chọn
+                &quot;Toàn bộ&quot; để xuất toàn bộ cây.
               </p>
             </div>
           </div>
 
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="btn-primary w-full"
-          >
-            {isExporting ? "Đang tải xuống..." : "Tải xuống bản sao lưu"}
-          </button>
+          <div className="mb-4">
+            <PersonSelector
+              persons={persons}
+              selectedId={exportRootId}
+              onSelect={setExportRootId}
+              label="Điểm gốc (Root) để xuất dữ liệu"
+              className="w-full sm:w-80"
+              showAllOption={true}
+              allOptionLabel="Toàn bộ dữ liệu"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <button
+              onClick={() => handleExport("json")}
+              disabled={isExporting}
+              className="btn-primary w-full"
+            >
+              {isExporting ? "Đang xử lý..." : "Xuất JSON"}
+            </button>
+            <button
+              onClick={() => handleExport("gedcom")}
+              disabled={isExporting}
+              className="btn w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium"
+            >
+              {isExporting ? "Đang xử lý..." : "Xuất GEDCOM"}
+            </button>
+            <button
+              onClick={() => handleExport("csv")}
+              disabled={isExporting}
+              className="btn w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium sm:col-span-2 lg:col-span-1"
+            >
+              {isExporting ? "Đang xử lý..." : "Xuất CSV (Zip)"}
+            </button>
+          </div>
         </div>
 
         {/* Import Card */}
-        <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-rose-200/20 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none group-hover:bg-rose-300/30 transition-colors" />
+        <div className="bg-white/80 border border-stone-200/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative group">
+          {/* Background Decor */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-200/20 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-rose-300/30 transition-colors" />
+          </div>
 
           <div className="flex items-start gap-4 mb-4 relative z-10">
             <div className="p-3 bg-rose-50 rounded-xl text-rose-600">
@@ -143,7 +253,8 @@ export default function DataImportExport() {
                 Phục hồi dữ liệu
               </h3>
               <p className="text-sm text-stone-500 mt-1">
-                Khôi phục cây gia phả từ một file JSON đã sao lưu.
+                Khôi phục cây gia phả từ file đã sao lưu (.json, .ged, hoặc
+                .zip).
                 <span className="font-semibold text-rose-600 ml-1">
                   Cảnh báo: Tác vụ này sẽ xoá toàn bộ dữ liệu hiện tại!
                 </span>
@@ -153,7 +264,7 @@ export default function DataImportExport() {
 
           <input
             type="file"
-            accept=".json"
+            accept=".json,.ged,.zip,.csv"
             className="hidden"
             ref={fileInputRef}
             onChange={handleFileChange}
@@ -163,7 +274,7 @@ export default function DataImportExport() {
             disabled={isImporting}
             className="btn w-full"
           >
-            {isImporting ? "Đang xử lý..." : "Chọn file JSON để phục hồi"}
+            {isImporting ? "Đang xử lý..." : "Chọn file phục hồi"}
           </button>
         </div>
       </div>

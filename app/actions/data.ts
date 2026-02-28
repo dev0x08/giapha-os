@@ -107,10 +107,14 @@ function sanitizeRelationship(
 
 // ─── Export ───────────────────────────────────────────────────────────────────
 
-export async function exportData(): Promise<BackupPayload> {
+export async function exportData(
+  exportRootId?: string,
+): Promise<BackupPayload> {
   const supabase = await verifyAdmin();
 
-  const { data: persons, error: personsError } = await supabase
+  // Fetch ALL persons and relationships first to perform traversal in memory.
+  // This is safe since typical family trees are < 10,000 nodes, easily fitting in memory.
+  const { data: allPersons, error: personsError } = await supabase
     .from("persons")
     .select(
       "id, full_name, gender, birth_year, birth_month, birth_day, death_year, death_month, death_day, is_deceased, is_in_law, birth_order, generation, avatar_url, note, created_at, updated_at",
@@ -120,7 +124,7 @@ export async function exportData(): Promise<BackupPayload> {
   if (personsError)
     throw new Error("Lỗi tải dữ liệu persons: " + personsError.message);
 
-  const { data: relationships, error: relationshipsError } = await supabase
+  const { data: allRels, error: relationshipsError } = await supabase
     .from("relationships")
     .select("id, type, person_a, person_b, created_at, updated_at")
     .order("created_at", { ascending: true });
@@ -130,11 +134,58 @@ export async function exportData(): Promise<BackupPayload> {
       "Lỗi tải dữ liệu relationships: " + relationshipsError.message,
     );
 
+  let exportPersons = (allPersons ?? []) as PersonExport[];
+  let exportRels = (allRels ?? []) as RelationshipExport[];
+
+  // If a root person is selected, filter the export to only their subtree
+  if (exportRootId && exportPersons.some((p) => p.id === exportRootId)) {
+    const includedPersonIds = new Set<string>([exportRootId]);
+
+    // 1. Traverse biological and adopted children recursively
+    const findDescendants = (parentId: string) => {
+      exportRels
+        .filter(
+          (r) =>
+            (r.type === "biological_child" || r.type === "adopted_child") &&
+            r.person_a === parentId,
+        )
+        .forEach((r) => {
+          if (!includedPersonIds.has(r.person_b)) {
+            includedPersonIds.add(r.person_b);
+            findDescendants(r.person_b);
+          }
+        });
+    };
+    findDescendants(exportRootId);
+
+    // 2. Add spouses for everyone in the tree so far
+    const descendantsArray = Array.from(includedPersonIds); // snapshot current members
+    descendantsArray.forEach((personId) => {
+      exportRels
+        .filter(
+          (r) =>
+            r.type === "marriage" &&
+            (r.person_a === personId || r.person_b === personId),
+        )
+        .forEach((r) => {
+          const spouseId = r.person_a === personId ? r.person_b : r.person_a;
+          includedPersonIds.add(spouseId);
+        });
+    });
+
+    // 3. Filter the payload
+    exportPersons = exportPersons.filter((p) => includedPersonIds.has(p.id));
+    exportRels = exportRels.filter(
+      (r) =>
+        includedPersonIds.has(r.person_a) && includedPersonIds.has(r.person_b),
+    );
+  }
+
   return {
     version: 2, // bumped for schema with birth_order + generation
     timestamp: new Date().toISOString(),
-    persons: (persons ?? []) as PersonExport[],
-    relationships: (relationships ?? []) as RelationshipExport[],
+    persons: exportPersons,
+    relationships: exportRels,
   };
 }
 
