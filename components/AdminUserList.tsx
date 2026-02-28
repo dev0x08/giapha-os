@@ -468,7 +468,7 @@ export default function AdminUserList({
                     defaultValue="member"
                   >
                     <option value="member">Thành viên (Member)</option>
-                    <option value="editor">Thư ký (Editor)</option>
+                    <option value="editor">Biên tập (Editor)</option>
                     <option value="admin">Quản trị viên (Admin)</option>
                   </select>
                 </div>
